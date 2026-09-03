@@ -2,7 +2,7 @@
 
 Referensi: https://mitrabertani.com/ (Artikel, Produk, Konsultasi Q&A, Jaringan, Event, Testimoni)
 Stack kunci: TypeScript + Next.js (React) + PostgreSQL Neon via `DATABASE_URL`
-Lokasi: `C:\Users\Jeremi\Documents\TIM-1-PERTANIAN`
+Lokasi: `C:\Users\Jeremi\Documents\TIM-1-PERTANIAN` (root repo = root proyek Next.js)
 Urutan eksekusi MVP: **UIUX → BE → FE**
 
 ---
