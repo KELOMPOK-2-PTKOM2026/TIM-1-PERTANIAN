@@ -14,7 +14,8 @@ export type NavItem = {
 };
 
 // KUNCI PLAN: menu Fase 2 (info obat, login) tetap tampil dengan
-// status "soon" -> klik mengarah ke /segera-hadir, bukan 404.
+// status "soon" -> Info Obat mengarah ke /obat (stub Fase 2),
+// Login mengarah ke /segera-hadir (stub auth OAuth Google).
 // Konsultasi TIDAK ada di navbar publik — hanya di dashboard (Fase 2, wajib login).
 export const NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: "/", status: "active" },
@@ -22,14 +23,14 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Harga Pasar", href: "/harga-pasar", status: "active" },
   {
     label: "Info Obat",
-    href: "/segera-hadir?fitur=obat",
+    href: "/obat",
     status: "soon",
     fitur: "obat",
     children: [
-      { label: "Herbisida", href: "/segera-hadir?fitur=obat-herbisida", status: "soon" },
-      { label: "Insektisida", href: "/segera-hadir?fitur=obat-insektisida", status: "soon" },
-      { label: "Fungisida", href: "/segera-hadir?fitur=obat-fungisida", status: "soon" },
-      { label: "Akarisida", href: "/segera-hadir?fitur=obat-akarisida", status: "soon" },
+      { label: "Herbisida", href: "/obat/jenis/herbisida", status: "soon" },
+      { label: "Insektisida", href: "/obat/jenis/insektisida", status: "soon" },
+      { label: "Fungisida", href: "/obat/jenis/fungisida", status: "soon" },
+      { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
     ],
   },
   { label: "Login", href: "/segera-hadir?fitur=login", status: "soon", fitur: "login" },

@@ -30,7 +30,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/segera-hadir?fitur=obat" className="hover:underline">
+              <Link href="/obat" className="hover:underline">
                 Info Obat (Segera)
               </Link>
             </li>
