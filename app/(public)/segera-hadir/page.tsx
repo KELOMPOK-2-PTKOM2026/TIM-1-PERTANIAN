@@ -6,31 +6,8 @@ const FITUR: Record<string, { title: string; desc: string; fase: string }> = {
     desc: "Tanya-jawab seputar budidaya, hama-penyakit, pestisida, dan pemupukan langsung dengan tim pakar. Fitur ini hanya tersedia di dashboard setelah login, bukan di halaman publik.",
     fase: "Fase 2 — dashboard + wajib login (Auth).",
   },
-  obat: {
-    title: "Info Obat-obatan Pertanian",
-    desc: "Katalog obat pertanian yang dikelompokkan per jenis: Herbisida, Insektisida, Fungisida, dan Akarisida — lengkap dengan bahan aktif, dosis, target, keamanan, dan box rekomendasi pakar.",
-    fase: "Fase 2 — setelah Admin UI tersedia.",
-  },
-  "obat-herbisida": {
-    title: "Herbisida",
-    desc: "Informasi obat pembasmi gulma: bahan aktif, dosis, waktu aplikasi, dan rekomendasi pakar.",
-    fase: "Fase 2 — bagian dari modul Info Obat.",
-  },
-  "obat-insektisida": {
-    title: "Insektisida",
-    desc: "Informasi obat pembasmi serangga hama: bahan aktif, target hama, tanaman cocok, dan keamanan.",
-    fase: "Fase 2 — bagian dari modul Info Obat.",
-  },
-  "obat-fungisida": {
-    title: "Fungisida",
-    desc: "Informasi obat pembasmi jamur: bahan aktif, dosis, interval semprot, dan rekomendasi.",
-    fase: "Fase 2 — bagian dari modul Info Obat.",
-  },
-  "obat-akarisida": {
-    title: "Akarisida",
-    desc: "Informasi obat pembasmi tungau: bahan aktif, cara aplikasi, dan keamanan.",
-    fase: "Fase 2 — bagian dari modul Info Obat.",
-  },
+  // Catatan: kunci obat* pindah ke route /obat (stub Fase 2).
+  // Segera-hadir hanya untuk konsultasi|login|admin + fallback generik.
   login: {
     title: "Login",
     desc: "Login dan pendaftaran akun (Petani, Pakar, Admin) untuk mengakses Konsultasi dan halaman Admin.",

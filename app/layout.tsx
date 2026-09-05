@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,17 +18,16 @@ export const metadata: Metadata = {
     "Website pertanian untuk petani Indonesia: informasi harga pasar, tips budidaya, dan solusi masalah tanaman.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+// Root layout minimal: font + metadata saja.
+// Navbar/Footer pindah ke app/(public)/layout.tsx agar
+// (auth)/dashboard/admin bisa pakai layout sendiri.
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
-        <Navbar />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4">{children}</main>
-        <Footer />
-      </body>
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }
