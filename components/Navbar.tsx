@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
+import LogoTani from "@/components/logo tanimaju.png";
+import SignIn from "@/components/icon sign-in.png";
 
 export type NavStatus = "active" | "soon";
 export type NavItem = {
@@ -13,14 +16,11 @@ export type NavItem = {
   children?: NavItem[];
 };
 
-// KUNCI PLAN: menu Fase 2 (info obat, login) tetap tampil dengan
-// status "soon" -> Info Obat mengarah ke /obat (stub Fase 2),
-// Login mengarah ke /segera-hadir (stub auth OAuth Google).
-// Konsultasi TIDAK ada di navbar publik — hanya di dashboard (Fase 2, wajib login).
 export const NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: "/", status: "active" },
   { label: "Artikel", href: "/artikel", status: "active" },
   { label: "Harga Pasar", href: "/harga-pasar", status: "active" },
+  { label: "Tentang", href: "#", status: "active" },
   {
     label: "Info Obat",
     href: "/obat",
@@ -33,7 +33,6 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
     ],
   },
-  { label: "Login", href: "/segera-hadir?fitur=login", status: "soon", fitur: "login" },
 ];
 
 function SoonBadge() {
@@ -49,31 +48,38 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-tani-800 text-white shadow">
+    <header className="font-[family-name:var(--font-navbar)] sticky top-0 z-40 bg-[#084734] text-white shadow">
+      {/* Kontainer Utama menggunakan Grid 3 Kolom pada Desktop */}
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-          <span aria-hidden className="text-2xl">
-            🌾
-          </span>
-          TaniMaju
-        </Link>
-        <button
-          className="rounded p-2 text-white hover:bg-tani-700 md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Buka menu"
-          aria-expanded={open}
+        {/* BAGIAN 1 (KIRI): LOGO */}
+        <div className="flex items-center justify-start">
+          <Link href="/" className="flex items-center text-lg -ml-10">
+            <Image
+              src={LogoTani}
+              alt="Logo TaniMaju"
+              width={128}
+              height={32}
+              className="h-[32px] w-[128px] object-contain"
+            />
+          </Link>
+        </div>
+
+        {/* BAGIAN 2 (TENGAH): MENU NAVIGASI DESKTOP */}
+        <nav
+          className="hidden items-center justify-center gap-1 md:flex"
+          aria-label="Navigasi utama"
         >
-          ☰
-        </button>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
           {NAV_ITEMS.map((item) => (
             <div key={item.label} className="group relative">
               <Link
                 href={item.href}
                 aria-disabled={item.status === "soon"}
-                title={item.status === "soon" ? "Segera hadir di Fase 2" : undefined}
-                className={`flex items-center rounded px-3 py-2 text-sm font-medium hover:bg-tani-700 ${
-                  pathname === item.href.split("?")[0] && item.status === "active"
+                title={
+                  item.status === "soon" ? "Segera hadir di Fase 2" : undefined
+                }
+                className={`flex items-center rounded-md px-3 py-1 text-sm font-medium hover:bg-[#CDEF7A] hover:text-black ${
+                  pathname === item.href.split("?")[0] &&
+                  item.status === "active"
                     ? "bg-tani-700"
                     : ""
                 } ${item.status === "soon" ? "cursor-not-allowed opacity-80" : ""}`}
@@ -98,9 +104,39 @@ export default function Navbar() {
             </div>
           ))}
         </nav>
+
+        {/* BAGIAN 3 (KANAN): ELEMEN KANAN (Contoh: Tombol Login/Masuk) */}
+        <div className="hidden items-center justify-end md:flex -mx-15">
+          <Link
+            href="/segera-hadir?fitur=login"
+            className="flex items-center rounded-lg  px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-amber-400"
+          >
+            <Image
+              src={SignIn}
+              alt="Sign In"
+              className="h-[15px] w-[17px] object-contain"
+            />
+            <p className="px-3 text-white text-18px">Sign In</p>
+          </Link>
+        </div>
+
+        {/* TOMBOL HAMBURGER MOBILE (Tampil di kanan khusus tampilan HP) */}
+        <button
+          className="rounded p-2 text-white hover:bg-tani-700 md:hidden"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Buka menu"
+          aria-expanded={open}
+        >
+          ☰
+        </button>
       </div>
+
+      {/* NAVIGASI SELULER (MOBILE) */}
       {open && (
-        <nav className="border-t border-tani-700 px-4 pb-4 md:hidden" aria-label="Navigasi seluler">
+        <nav
+          className="border-t border-tani-700 px-4 pb-4 md:hidden"
+          aria-label="Navigasi seluler"
+        >
           {NAV_ITEMS.map((item) => (
             <div key={item.label}>
               <Link
@@ -124,6 +160,17 @@ export default function Navbar() {
               ))}
             </div>
           ))}
+          {/* Tombol Login Mobile */}
+          <div className="mt-3">
+            <Link
+              href="/segera-hadir?fitur=login"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center rounded-lg bg-amber-500 py-2 text-sm font-semibold text-gray-900"
+            >
+              Login
+              <SoonBadge />
+            </Link>
+          </div>
         </nav>
       )}
     </header>
