@@ -1,4 +1,5 @@
 import { PrismaClient, ArticleCategory } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -122,7 +123,7 @@ async function main() {
     await prisma.commodity.upsert({
       where: { name: c.name },
       update: { unit: c.unit },
-      create: c,
+      create: { name: c.name, unit: c.unit },
     });
   }
   for (const m of MARKETS) {
@@ -175,7 +176,20 @@ async function main() {
     await prisma.price.createMany({ data: rows.slice(i, i + 100) });
   }
 
-  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga`);
+  // Admin awal (Fase 2). Ganti SEED_ADMIN_PASSWORD di produksi.
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "admin12345";
+  await prisma.user.upsert({
+    where: { email: "admin@tanimaju.id" },
+    update: {},
+    create: {
+      email: "admin@tanimaju.id",
+      name: "Admin TaniMaju",
+      role: "ADMIN",
+      passwordHash: await bcrypt.hash(adminPassword, 10),
+    },
+  });
+
+  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, 1 admin`);
 }
 
 main()
