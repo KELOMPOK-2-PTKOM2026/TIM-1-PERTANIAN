@@ -1,51 +1,72 @@
-import Link from "next/link";
+import "./Footer.css";
 
 export default function Footer() {
   return (
-    <footer className="mt-12 bg-tani-950 text-tani-100">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
-        <div>
-          <p className="text-lg font-bold text-white">🌾 TaniMaju</p>
-          <p className="mt-2 text-sm">
-            Informasi dan edukasi untuk petani Indonesia: harga pasar, tips budidaya, dan solusi
-            masalah tanaman.
+    <footer className="footer">
+      {/* Background image */}
+      <div className="footer-background" />
+
+      {/* Isi footer */}
+      <div className="footer-overlay">
+        <div className="footer-kiri">
+          <img
+            src="/tanimajulogo.png"
+            alt="Logo Tanimaju"
+            className="logo-full"
+          />
+
+          <p>
+            Setapak demi setapak, selangkah demi selangkah — timba pengalaman,
+            perkaya wawasan, dan pantau harga pasar sebelum menjual panen.
           </p>
         </div>
-        <div>
-          <p className="font-semibold text-white">Jelajahi</p>
-          <ul className="mt-2 space-y-1 text-sm">
-            <li>
-              <Link href="/artikel" className="hover:underline">
-                Artikel & Edukasi
-              </Link>
-            </li>
-            <li>
-              <Link href="/harga-pasar" className="hover:underline">
-                Harga Pasar
-              </Link>
-            </li>
-            <li>
-              <Link href="/segera-hadir?fitur=konsultasi" className="hover:underline">
-                Konsultasi via Dashboard (Segera)
-              </Link>
-            </li>
-            <li>
-              <Link href="/obat" className="hover:underline">
-                Info Obat (Segera)
-              </Link>
-            </li>
-          </ul>
+
+        <div className="footer-menu">
+          <div className="kolom">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="kolom">
+            <h4>About</h4>
+            <ul>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="kolom">
+            <h4>Contact Support</h4>
+            <ul>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+              <li>
+                <a href="#">Tentang kami</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <p className="font-semibold text-white">Keterangan Data</p>
-          <p className="mt-2 text-sm">
-            Data harga pada MVP ini dimasukkan manual oleh admin dan bersifat contoh. Selalu
-            konfirmasi ke pasar setempat sebelum mengambil keputusan jual.
-          </p>
-        </div>
-      </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs">
-        © 2026 TaniMaju — MVP pertanian untuk petani Indonesia
       </div>
     </footer>
   );
