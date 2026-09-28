@@ -1,0 +1,123 @@
+.footer {
+  position: relative;
+  margin-top: auto;
+  overflow: hidden;
+  color: white;
+  background-color: #064e3b; /* Emerald Pine */
+}
+
+/* Background gambar */
+.footer-background {
+  position: absolute;
+  inset: 0;
+
+  background-image: url("/latarfooter.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Sedikit menaikkan kontras gambar */
+  filter: contrast(1.15);
+  transform: scale(1.01);
+}
+
+/* Overlay Emerald Pine */
+.footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(6, 78, 59, 0.68);
+
+  pointer-events: none;
+}
+
+/* Isi footer */
+.footer-overlay {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  gap: 40px;
+  padding: 50px 40px;
+}
+
+/* Bagian kiri */
+.footer-kiri {
+  max-width: 300px;
+}
+
+.logo-full {
+  width: 160px;
+  height: auto;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.footer-kiri p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #d1fae5;
+}
+
+/* Menu */
+.footer-menu {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.kolom h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.kolom ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.kolom ul li {
+  margin-bottom: 10px;
+}
+
+.kolom ul li a {
+  text-decoration: none;
+  color: #a7d9c7;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.kolom ul li a:hover {
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-overlay {
+    flex-direction: column;
+    padding: 40px 25px;
+  }
+
+  .footer-menu {
+    width: 100%;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-menu {
+    flex-direction: column;
+    gap: 25px;
+  }
+}

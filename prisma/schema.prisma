@@ -1,0 +1,142 @@
+// MVP + Fase 2 Auth (User + Role).
+// Provider postgres (Neon). Isi DATABASE_URL + DIRECT_URL dari dashboard Neon.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArticleCategory {
+  PENGETAHUAN
+  KIAT
+  SOLUSI
+  INSPIRASI
+}
+
+model Article {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  title       String
+  excerpt     String
+  contentMd   String          @db.Text
+  coverUrl    String?
+  category    ArticleCategory
+  tags        String[]
+  publishedAt DateTime?
+  views       Int             @default(0)
+  createdAt   DateTime        @default(now())
+
+  @@index([category, publishedAt])
+}
+
+model Commodity {
+  id     String  @id @default(cuid())
+  name   String  @unique
+  unit   String  @default("kg")
+  prices Price[]
+}
+
+model Market {
+  id     String  @id @default(cuid())
+  name   String  @unique
+  city   String
+  prices Price[]
+}
+
+model Price {
+  id          String   @id @default(cuid())
+  commodityId String
+  marketId    String
+  price       Int // rupiah per satuan
+  date        DateTime @db.Date
+  createdAt   DateTime @default(now())
+
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+  market    Market    @relation(fields: [marketId], references: [id], onDelete: Cascade)
+
+  @@index([commodityId, marketId, date])
+}
+
+// Fase 2 — Auth (email + password)
+enum Role {
+  ADMIN
+  PAKAR
+  PETANI
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(PETANI)
+  name         String
+  city         String?
+  whatsapp     String?
+  createdAt    DateTime @default(now())
+
+  consultations Consultation[] @relation("KonsultasiUser")
+  answersGiven  Consultation[] @relation("KonsultasiPakar")
+  pesticides    Pesticide[]
+}
+
+// Fase 2 — Backend konsultasi + obat
+enum Topic {
+  BUDIDAYA
+  HAMA
+  PESTISIDA
+  PEMUPUKAN
+}
+
+enum KonsultStatus {
+  OPEN
+  ANSWERED
+}
+
+enum ObatJenis {
+  HERBISIDA
+  INSEKTISIDA
+  FUNGISIDA
+  AKARISIDA
+}
+
+model Consultation {
+  id           String       @id @default(cuid())
+  userId       String
+  topic        Topic
+  question     String       @db.Text
+  answer       String?      @db.Text
+  answeredById String?
+  status       KonsultStatus @default(OPEN)
+  createdAt    DateTime     @default(now())
+
+  user       User  @relation("KonsultasiUser", fields: [userId], references: [id], onDelete: Cascade)
+  answeredBy User? @relation("KonsultasiPakar", fields: [answeredById], references: [id], onDelete: SetNull)
+
+  @@index([userId, status])
+  @@index([status, createdAt])
+}
+
+model Pesticide {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  name         String
+  type         ObatJenis
+  bahanAktif   String
+  target       String[]
+  tanamanCocok String[]
+  dosis        String
+  caraPakai    String    @db.Text
+  keamanan     String    @db.Text
+  rekomendasi  String?   @db.Text
+  coverUrl     String?
+  isPublished  Boolean   @default(true)
+  createdById  String?
+  createdAt    DateTime  @default(now())
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([type, isPublished])
+}
