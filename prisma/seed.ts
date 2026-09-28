@@ -1,4 +1,4 @@
-import { PrismaClient, ArticleCategory } from "@prisma/client";
+import { PrismaClient, ArticleCategory, type Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -178,7 +178,7 @@ async function main() {
 
   // Admin awal (Fase 2). Ganti SEED_ADMIN_PASSWORD di produksi.
   const adminPassword = process.env.SEED_ADMIN_PASSWORD || "admin12345";
-  await prisma.user.upsert({
+  const admin = await prisma.user.upsert({
     where: { email: "admin@tanimaju.id" },
     update: {},
     create: {
@@ -189,7 +189,147 @@ async function main() {
     },
   });
 
-  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, 1 admin`);
+  // Seed obat (Fase 2): 8 item, 2 per jenis.
+  const PESTICIDES: Omit<Prisma.PesticideUncheckedCreateInput, "createdById">[] = [
+    {
+      slug: "sidazin-550-sc",
+      name: "Sidazin 550 SC",
+      type: "HERBISIDA",
+      bahanAktif: "Atrazin 550 g/l",
+      target: ["gulma berdaun lebar", "teki"],
+      tanamanCocok: ["Jagung"],
+      dosis: "1,5–2 ml/l air",
+      caraPakai: "Semprot merata pada gulma muda pagi hari.",
+      keamanan: "Gunakan APD lengkap. PHI 30 hari sebelum panen.",
+      rekomendasi: "Lihat artikel olah lahan sebelum aplikasi.",
+    },
+    {
+      slug: "gramati-280-sl",
+      name: "Gramati 280 SL",
+      type: "HERBISIDA",
+      bahanAktif: "Paraquat diklorida 280 g/l",
+      target: ["gulma total"],
+      tanamanCocok: ["Semua (pra-tanam)"],
+      dosis: "2–3 ml/l air",
+      caraPakai: "Semprot tanpa mengenai tanaman pokok.",
+      keamanan: "Sangat beracun. APD penuh, jauhkan dari anak-anak.",
+      rekomendasi: null,
+    },
+    {
+      slug: "abacel-18-ec",
+      name: "Abacel 18 EC",
+      type: "INSEKTISIDA",
+      bahanAktif: "Abamektin 18 g/l",
+      target: ["thrips", "tungau"],
+      tanamanCocok: ["Cabai", "Tomat"],
+      dosis: "0,5–1 ml/l air",
+      caraPakai: "Semprot bawah daun sore hari, rotasi tiap 2–3 aplikasi.",
+      keamanan: "Gunakan masker dan sarung tangan. PHI 7 hari.",
+      rekomendasi: "Lihat artikel daun cabai keriting akibat thrips.",
+    },
+    {
+      slug: "spintor-120-sc",
+      name: "Spintor 120 SC",
+      type: "INSEKTISIDA",
+      bahanAktif: "Spinetoram 120 g/l",
+      target: ["thrips", "ulat grayak"],
+      tanamanCocok: ["Cabai", "Bawang Merah"],
+      dosis: "0,5 ml/l air",
+      caraPakai: "Semprot pagi/sore, maksimal 3 aplikasi per musim.",
+      keamanan: "APD standar. PHI 5 hari.",
+      rekomendasi: null,
+    },
+    {
+      slug: "dithane-m45",
+      name: "Dithane M-45",
+      type: "FUNGISIDA",
+      bahanAktif: "Mankozeb 80%",
+      target: ["bercak daun", "busuk batang"],
+      tanamanCocok: ["Cabai", "Tomat", "Melon"],
+      dosis: "2 g/l air",
+      caraPakai: "Semprot preventif tiap 7 hari di musim hujan.",
+      keamanan: "Gunakan APD. PHI 14 hari.",
+      rekomendasi: "Lihat artikel olah lahan musim hujan.",
+    },
+    {
+      slug: "amistar-top",
+      name: "Amistar Top",
+      type: "FUNGISIDA",
+      bahanAktif: "Azoksistrobin + difenokonazol",
+      target: ["antraknosa", "layu"],
+      tanamanCocok: ["Cabai"],
+      dosis: "1 ml/l air",
+      caraPakai: "Semprot kuratif saat gejala awal muncul.",
+      keamanan: "APD standar. PHI 7 hari.",
+      rekomendasi: null,
+    },
+    {
+      slug: "samite-135-ec",
+      name: "Samite 135 EC",
+      type: "AKARISIDA",
+      bahanAktif: "Piridaben 135 g/l",
+      target: ["tungau merah"],
+      tanamanCocok: ["Cabai", "Melon"],
+      dosis: "1 ml/l air",
+      caraPakai: "Semprot bawah daun, ulangi 7 hari bila perlu.",
+      keamanan: "APD lengkap. PHI 10 hari.",
+      rekomendasi: null,
+    },
+    {
+      slug: "omite-570-ew",
+      name: "Omite 570 EW",
+      type: "AKARISIDA",
+      bahanAktif: "Propargit 570 g/l",
+      target: ["tungau"],
+      tanamanCocok: ["Tomat", "Cabai"],
+      dosis: "1–1,5 ml/l air",
+      caraPakai: "Semprot merata sore hari.",
+      keamanan: "APD lengkap. PHI 14 hari.",
+      rekomendasi: null,
+    },
+  ];
+  for (const p of PESTICIDES) {
+    await prisma.pesticide.upsert({
+      where: { slug: p.slug },
+      update: {},
+      create: { ...p, createdById: admin.id },
+    });
+  }
+
+  // Contoh konsultasi: 1 OPEN + 1 ANSWERED.
+  const petani = await prisma.user.upsert({
+    where: { email: "petani@tanimaju.id" },
+    update: {},
+    create: {
+      email: "petani@tanimaju.id",
+      name: "Petani Contoh",
+      role: "PETANI",
+      passwordHash: await bcrypt.hash("petani12345", 10),
+    },
+  });
+  await prisma.consultation.createMany({
+    data: [
+      {
+        userId: petani.id,
+        topic: "HAMA",
+        question: "Daun cabai saya keriting ke atas dan kaku, apakah ini thrips dan apa obatnya?",
+        status: "ANSWERED",
+        answer: "Ya, itu gejala thrips. Semprot abamektin 0,5–1 ml/l sore hari mengenai bawah daun, pasang perangkap kuning.",
+        answeredById: admin.id,
+      },
+      {
+        userId: petani.id,
+        topic: "PEMUPUKAN",
+        question: "Berapa dosis pupuk kandang fermentasi yang aman untuk bedengan cabai musim hujan?",
+        status: "OPEN",
+      },
+    ],
+    skipDuplicates: true,
+  });
+
+  console.log(
+    `Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, 1 admin, ${PESTICIDES.length} obat`,
+  );
 }
 
 main()

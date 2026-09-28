@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import LogoTani from "@/components/logo tanimaju.png";
-import SignIn from "@/components/icon sign-in.png";
+import LogoTani from "@/components/logo-tanimaju.png";
+import SignIn from "@/components/icon-sign-in.png";
 
 export type NavStatus = "active" | "soon";
 export type NavItem = {

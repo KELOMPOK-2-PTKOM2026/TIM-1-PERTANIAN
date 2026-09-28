@@ -76,4 +76,67 @@ model User {
   city         String?
   whatsapp     String?
   createdAt    DateTime @default(now())
+
+  consultations Consultation[] @relation("KonsultasiUser")
+  answersGiven  Consultation[] @relation("KonsultasiPakar")
+  pesticides    Pesticide[]
+}
+
+// Fase 2 — Backend konsultasi + obat
+enum Topic {
+  BUDIDAYA
+  HAMA
+  PESTISIDA
+  PEMUPUKAN
+}
+
+enum KonsultStatus {
+  OPEN
+  ANSWERED
+}
+
+enum ObatJenis {
+  HERBISIDA
+  INSEKTISIDA
+  FUNGISIDA
+  AKARISIDA
+}
+
+model Consultation {
+  id           String       @id @default(cuid())
+  userId       String
+  topic        Topic
+  question     String       @db.Text
+  answer       String?      @db.Text
+  answeredById String?
+  status       KonsultStatus @default(OPEN)
+  createdAt    DateTime     @default(now())
+
+  user       User  @relation("KonsultasiUser", fields: [userId], references: [id], onDelete: Cascade)
+  answeredBy User? @relation("KonsultasiPakar", fields: [answeredById], references: [id], onDelete: SetNull)
+
+  @@index([userId, status])
+  @@index([status, createdAt])
+}
+
+model Pesticide {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  name         String
+  type         ObatJenis
+  bahanAktif   String
+  target       String[]
+  tanamanCocok String[]
+  dosis        String
+  caraPakai    String    @db.Text
+  keamanan     String    @db.Text
+  rekomendasi  String?   @db.Text
+  coverUrl     String?
+  isPublished  Boolean   @default(true)
+  createdById  String?
+  createdAt    DateTime  @default(now())
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([type, isPublished])
 }
