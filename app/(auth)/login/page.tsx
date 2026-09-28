@@ -1,15 +1,17 @@
 import Link from "next/link";
+import LoginForm from "@/components/features/auth/LoginForm";
 
-// Stub Fase 2: login via OAuth Google (Auth.js v5).
-// TODO Fase 2: signIn("google") + callback ke /dashboard.
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>;
+}) {
+  const { callbackUrl } = await searchParams;
+
   return (
     <div className="space-y-4 text-center">
       <h1 className="text-2xl font-extrabold">Login</h1>
-      <p className="text-sm text-stone-600">
-        Login dengan akun Google untuk mengakses Konsultasi dan halaman Admin. Segera hadir di
-        Fase 2.
-      </p>
+      <LoginForm callbackUrl={callbackUrl} />
       <p>
         <Link href="/register" className="text-sm hover:underline">
           Belum punya akun? Daftar

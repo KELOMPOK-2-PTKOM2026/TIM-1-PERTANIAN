@@ -4,7 +4,7 @@ Website pertanian untuk petani Indonesia: edukasi budidaya + pantau harga pasar 
 panen. Stack: TypeScript + Next.js App Router + Tailwind + Prisma + PostgreSQL Neon
 (`DATABASE_URL`).
 
-MVP 100% publik tanpa login. Fase 2: Auth (OAuth Google via Auth.js v5), Dashboard
+MVP 100% publik tanpa login. Fase 2: Auth (email + password via Auth.js v5 Credentials), Dashboard
 Konsultasi (wajib login), Info Obat, Admin UI.
 
 ## Struktur Folder
@@ -21,14 +21,14 @@ app/
   (public)/obat/[slug]/             # Fase 2 stub: dosis, keamanan, rekomendasi
   (public)/segera-hadir/            # placeholder konsultasi|login|admin + fallback
   (auth)/layout.tsx                 # layout polos tanpa Navbar
-  (auth)/login/ + register/         # Fase 2 stub (OAuth Google)
+  (auth)/login/ + register/         # login email+password (register: stub UI)
   dashboard/layout.tsx              # Fase 2 stub + nav konsultasi
   dashboard/konsultasi/ + arsip/    # Fase 2 stub (form + riwayat + arsip Q&A)
   admin/layout.tsx                  # Fase 2 stub + nav (guard ADMIN)
   admin/harga|artikel|obat/         # Fase 2 stub CRUD
   api/harga/route.ts                # Fase 2 stub (F-P2-05: ?komoditas&pasar&from&to)
-  api/auth/[...nextauth]/           # placeholder OAuth Google (isi di Fase 2)
-middleware.ts               # stub guard /dashboard + /admin (isi di Fase 2)
+  api/auth/[...nextauth]/           # handler Auth.js
+proxy.ts                    # guard /dashboard (login) + /admin (ADMIN) — Next 16: middleware → proxy
 modules/{auth,konsultasi,obat,artikel,harga}/  # Fase 2: schema (zod) + service + types
 lib/                        # db, data + mock fallback, format, auth, env, errors
 components/ui/              # shared (Button, Input, Badge, EmptyState)
@@ -42,8 +42,8 @@ prisma/                     # schema (migrasi 001 MVP) + seed
 - `modules/<domain>/` — schema (zod) + service + types per domain pertanian
   (artikel/harga/obat/konsultasi/auth). Tanpa `*.repository.ts` — Prisma sudah jadi
   repository. Tanpa `users/products` — tidak ada di PRD.
-- `lib/auth.ts` + `app/api/auth/[...nextauth]/` — Auth Fase 2 = OAuth Google (Auth.js v5).
-  Folder disiapkan sekarang, implementasi nanti.
+- `lib/auth.ts` + `app/api/auth/[...nextauth]/` — Auth = email + password (Auth.js v5 Credentials, session JWT, bcrypt).
+  Logika di `modules/auth/` (schema, service, actions, guard `requireUser`/`requireRole`).
 
 ## Aturan
 
@@ -75,9 +75,25 @@ Aturan: 1 branch = 1 tujuan, huruf kecil + strip, hapus branch setelah merge.
 
 ## Getting Started
 
+1. Salin `.env.example` → `.env`, isi `DATABASE_URL` dan `AUTH_SECRET` (`npx auth secret`).
+   `AUTH_SECRET` kosong → login error "server configuration".
+2. Migrate + seed (artikel, harga, 1 admin):
+
+```bash
+npx prisma migrate dev
+```
+
+```bash
+npm run db:seed
+```
+
+3. Jalankan:
+
 ```bash
 npm run dev
 ```
+
+Akun admin dev: `admin@tanimaju.id` / `admin12345` (ubah via `SEED_ADMIN_PASSWORD`).
 
 Buka [http://localhost:3000](http://localhost:3000). Verifikasi MVP:
 
