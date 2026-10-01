@@ -33,7 +33,10 @@ function HargaIcon() {
 
 function WaveDivider() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-10 overflow-hidden">
+    // z-0 supaya gelombang tetap di bawah konten (konten pakai z-10), sehingga
+    // tidak menutupi stat bar maupun kartu fitur. Section juga overflow-hidden
+    // jadi gelombangnya ter-clip, bukan menimpa isi.
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-0 overflow-hidden">
       {/* SVG dibuat lebih lebar dari section (w-108%) dan digeser -mx-[4%] supaya
           animasi translate horizontal (-1.75rem) tidak pernah membuka celah di tepi. */}
       <svg
@@ -68,11 +71,13 @@ export default function Home() {
         {/* Hero — sesuai desain landing page */}
         <section className="relative isolate overflow-hidden bg-gradient-to-b from-tani-50 via-white to-tani-50">
           {/* Lapisan dekoratif: blob gradient lembut sebagai pengganti background polos.
-              Ukuran blob diperkecil di layar kecil supaya tidak menutupi konten. */}
+              Saturasi diturunkan (satu tingkat lebih muda dari tani-200/lime-200,
+              opacity lebih rendah) supaya gradasinya tidak mencolok dan konten
+              tetap terbaca. Ukuran blob diperkecil di layar kecil. */}
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div className="wave-drift absolute -left-24 -top-28 h-64 w-64 rounded-full bg-tani-200/70 blur-3xl sm:-left-32 sm:-top-40 sm:h-[26rem] sm:w-[26rem]" />
-            <div className="wave-drift wave-drift-slow absolute -right-24 top-12 h-72 w-72 rounded-full bg-lime-200/60 blur-3xl sm:-right-40 sm:top-16 sm:h-[30rem] sm:w-[30rem]" />
-            <div className="wave-drift absolute bottom-10 left-1/4 h-56 w-56 rounded-full bg-tani-100/80 blur-3xl sm:h-72 sm:w-72" />
+            <div className="wave-drift absolute -left-24 -top-28 h-64 w-64 rounded-full bg-tani-100/60 blur-3xl sm:-left-32 sm:-top-40 sm:h-[26rem] sm:w-[26rem]" />
+            <div className="wave-drift wave-drift-slow absolute -right-24 top-12 h-72 w-72 rounded-full bg-lime-100/50 blur-3xl sm:-right-40 sm:top-16 sm:h-[30rem] sm:w-[30rem]" />
+            <div className="wave-drift absolute bottom-10 left-1/4 h-56 w-56 rounded-full bg-tani-100/55 blur-3xl sm:h-72 sm:w-72" />
           </div>
 
           <div className="relative z-10 mx-auto max-w-6xl px-4 pb-32 pt-8 text-center sm:pb-40 sm:pt-10 md:pt-14">
@@ -120,11 +125,12 @@ export default function Home() {
               />
             </div>
 
-            {/* Stat bar — angka di atas, label di bawah. Class `order-*` lama
-                tidak berefek karena anak <dl> ini bukan item flex/grid, jadi
-                diganti ke flex-col-reverse. Ukuran mengecil di layar sempit. */}
-            <dl className="mt-8 grid grid-cols-1 divide-y divide-tani-600/20 rounded-xl bg-[#CDEDB3] px-4 py-3 text-center sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6 sm:py-5">
-              <div className="flex flex-col-reverse py-3 sm:py-1">
+            {/* Stat bar — tiga kartu terpisah: label di atas, angka di bawah.
+                `order-*` lama tidak berefek karena anak <dl> ini bukan item
+                flex/grid, jadi pakai flex-col-reverse. Label diperkecil di
+                layar sempit supaya angka tetap terbaca. */}
+            <dl className="mt-8 grid grid-cols-1 gap-3 text-center min-[420px]:grid-cols-3">
+              <div className="flex flex-col-reverse rounded-xl bg-[#CDEDB3] px-4 py-5">
                 <dt className="order-2 mt-1 text-[11px] leading-snug text-tani-900/70 sm:text-xs">
                   Petani Terbantu di Indonesia
                 </dt>
@@ -133,7 +139,7 @@ export default function Home() {
                 </dd>
               </div>
 
-              <div className="flex flex-col-reverse py-3 sm:py-1">
+              <div className="flex flex-col-reverse rounded-xl bg-[#CDEDB3] px-4 py-5">
                 <dt className="order-2 mt-1 text-[11px] leading-snug text-tani-900/70 sm:text-xs">
                   Efisiensi Waktu &amp; Biaya
                 </dt>
@@ -142,7 +148,7 @@ export default function Home() {
                 </dd>
               </div>
 
-              <div className="flex flex-col-reverse py-3 sm:py-1">
+              <div className="flex flex-col-reverse rounded-xl bg-[#CDEDB3] px-4 py-5">
                 <dt className="order-2 mt-1 text-[11px] leading-snug text-tani-900/70 sm:text-xs">
                   Akurasi Data Harga Pasar
                 </dt>
@@ -235,20 +241,6 @@ genggaman Anda.
 
           <WaveDivider />
         </section>
-
-        {/* Gelombang transisi ke footer — warna sama dengan background footer */}
-        <div aria-hidden className="relative -mb-px overflow-hidden">
-          <svg
-            viewBox="0 0 1440 120"
-            preserveAspectRatio="none"
-            className="wave-lag -mx-[4%] block h-14 w-[108%] text-[#064e3b] sm:h-20"
-          >
-            <path
-              fill="currentColor"
-              d="M0 40c150 44 300 60 450 44s280-70 440-92 280-2 380 30 170 46 170 46v52H0Z"
-            />
-          </svg>
-        </div>
       </main>
 
       {/* Footer */}
