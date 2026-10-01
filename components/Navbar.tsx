@@ -49,18 +49,18 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-tani-800 text-white shadow">
+    <header className="sticky top-0 z-40 bg-[#064e3b] text-white shadow">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-          <span aria-hidden className="text-2xl">
+        <Link href="/" className="flex shrink-0 items-center gap-2 text-base font-bold sm:text-lg">
+          <span aria-hidden className="text-xl sm:text-2xl">
             🌾
           </span>
           TaniMaju
         </Link>
         <button
-          className="rounded p-2 text-white hover:bg-tani-700 md:hidden"
+          className="-mr-2 rounded p-2 text-xl text-white hover:bg-white/10 md:hidden"
           onClick={() => setOpen((v) => !v)}
-          aria-label="Buka menu"
+          aria-label={open ? "Tutup menu" : "Buka menu"}
           aria-expanded={open}
         >
           ☰
@@ -72,9 +72,9 @@ export default function Navbar() {
                 href={item.href}
                 aria-disabled={item.status === "soon"}
                 title={item.status === "soon" ? "Segera hadir di Fase 2" : undefined}
-                className={`flex items-center rounded px-3 py-2 text-sm font-medium hover:bg-tani-700 ${
+                className={`flex items-center rounded-full px-3 py-2 text-sm font-medium hover:bg-white/10 ${
                   pathname === item.href.split("?")[0] && item.status === "active"
-                    ? "bg-tani-700"
+                    ? "bg-lime-300 font-semibold text-tani-950 hover:bg-lime-200"
                     : ""
                 } ${item.status === "soon" ? "cursor-not-allowed opacity-80" : ""}`}
               >
@@ -82,12 +82,12 @@ export default function Navbar() {
                 {item.status === "soon" && <SoonBadge />}
               </Link>
               {item.children && (
-                <div className="invisible absolute left-0 top-full w-48 rounded-b-lg bg-tani-800 p-1 opacity-0 shadow-lg group-hover:visible group-hover:opacity-100">
+                <div className="invisible absolute left-0 top-full w-48 rounded-b-lg bg-[#064e3b] p-1 opacity-0 shadow-lg group-hover:visible group-hover:opacity-100">
                   {item.children.map((c) => (
                     <Link
                       key={c.label}
                       href={c.href}
-                      className="flex items-center rounded px-3 py-2 text-sm hover:bg-tani-700"
+                      className="flex items-center rounded px-3 py-2 text-sm hover:bg-white/10"
                     >
                       {c.label}
                       <SoonBadge />
@@ -100,13 +100,16 @@ export default function Navbar() {
         </nav>
       </div>
       {open && (
-        <nav className="border-t border-tani-700 px-4 pb-4 md:hidden" aria-label="Navigasi seluler">
+        <nav
+          className="max-h-[calc(100dvh-3.25rem)] overflow-y-auto overscroll-contain border-t border-white/15 px-4 pb-4 md:hidden"
+          aria-label="Navigasi seluler"
+        >
           {NAV_ITEMS.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="flex items-center border-b border-tani-700/60 py-3 text-sm font-medium"
+                className="flex items-center border-b border-white/10 py-3 text-sm font-medium"
               >
                 {item.label}
                 {item.status === "soon" && <SoonBadge />}
@@ -116,7 +119,7 @@ export default function Navbar() {
                   key={c.label}
                   href={c.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center py-2 pl-4 text-sm text-tani-100"
+                  className="flex items-center py-2 pl-4 text-sm text-emerald-50"
                 >
                   ↳ {c.label}
                   <SoonBadge />
