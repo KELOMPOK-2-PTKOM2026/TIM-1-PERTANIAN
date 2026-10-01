@@ -39,6 +39,8 @@ export async function getArticles(filter: ArticleFilter = {}): Promise<Article[]
         tags: r.tags,
         publishedAt: (r.publishedAt ?? r.createdAt).toISOString(),
         views: r.views,
+        imageUrl: r.imageUrl ?? "",
+        author: r.author ?? "",
       }));
     } catch {
       // jatuh ke mock
@@ -68,6 +70,8 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
           tags: r.tags,
           publishedAt: (r.publishedAt ?? r.createdAt).toISOString(),
           views: r.views,
+          imageUrl: r.imageUrl ?? "",
+          author: r.author ?? "",
         };
     } catch {
       // jatuh ke mock
