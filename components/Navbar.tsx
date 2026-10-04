@@ -20,7 +20,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: "/", status: "active" },
   { label: "Artikel", href: "/artikel", status: "active" },
   { label: "Harga Pasar", href: "/harga-pasar", status: "active" },
-  { label: "Tentang", href: "#", status: "active" },
+  { label: "Tentang", href: "/tentang", status: "active" },
   {
     label: "Info Obat",
     href: "/obat",
