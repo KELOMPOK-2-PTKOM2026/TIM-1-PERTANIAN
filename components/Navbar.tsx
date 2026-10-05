@@ -24,7 +24,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Info Obat",
     href: "/obat",
-    status: "soon",
+    status: "active",
     fitur: "obat",
     children: [
       { label: "Herbisida", href: "/obat/jenis/herbisida", status: "soon" },
