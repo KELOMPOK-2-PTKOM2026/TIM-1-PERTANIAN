@@ -23,6 +23,7 @@ model Article {
   excerpt     String
   contentMd   String          @db.Text
   coverUrl    String?
+  author      String?
   category    ArticleCategory
   tags        String[]
   publishedAt DateTime?
@@ -76,4 +77,30 @@ model User {
   city         String?
   whatsapp     String?
   createdAt    DateTime @default(now())
+}
+
+// Fase 2 — Info Obat (dikelola admin)
+enum PesticideType {
+  HERBISIDA
+  INSEKTISIDA
+  FUNGISIDA
+  AKARISIDA
+}
+
+model Pesticide {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  name             String
+  type             PesticideType
+  activeIngredient String
+  targets          String
+  dosage           String
+  packaging        String?
+  manufacturer     String?
+  description      String        @db.Text
+  imageUrl         String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([type])
 }
