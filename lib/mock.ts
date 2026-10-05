@@ -20,6 +20,109 @@ export type Article = {
   author: string;
 };
 
+export type Obat = {
+  id: string;
+  name: string;
+  activeIngredient: string;
+  category: string;
+  price: number;
+  unit: string;
+  kegunaanSasaran: string;
+  tanamanSasaran: string[];
+  dosisAplikasi: string;
+  phi: string;
+  imageUrl: string;
+};
+
+export const CATEGORY_OBAT_LABEL: Record<string, string> = {
+  PUPUK: "Pupuk & Nutrisi",
+  INSEKTISIDA: "Insektisida",
+  FUNGISIDA: "Fungisida",
+  HERBISIDA: "Herbisida",
+  LAINNYA: "Lainnya",
+};
+
+export const MOCK_OBAT: Obat[] = [
+  {
+    id: "1",
+    name: "PUPUK",
+    activeIngredient: "Propineb 70% + Seng (Zinc)",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mengendalikan penyakit bercak daun, busuk phytophthora, dan antraknosa pada tanaman...",
+    tanamanSasaran: ["Cabai", "Tomat", "Padi", "Bawang Merah", "Kentang"],
+    dosisAplikasi: "1,5 - 2 g/liter air merata pada daun di pagi hari saat gejala awal timbul.",
+    phi: "7 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P1",
+  },
+  {
+    id: "2",
+    name: "PUPUK",
+    activeIngredient: "Fipronil 50 g/l + ZPT",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Pengendalian hama penggerek batang dan kutu daun dengan zat pengatur tumbuh (ZPT).",
+    tanamanSasaran: ["Padi Sawah", "Jagung", "Cabai", "Kedelai"],
+    dosisAplikasi: "1 - 1,5 ml/liter air. Semprot volume tinggi pada pangkal dan daun sasaran.",
+    phi: "14 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P2",
+  },
+  {
+    id: "3",
+    name: "PUPUK",
+    activeIngredient: "Glifosat Isopropilamina 486 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Membasmi gulma berdaun lebar dan sempit tanpa merusak tekstur tanah gembur.",
+    tanamanSasaran: ["Lahan Nol", "Sawit", "Karet", "Jagung Olah"],
+    dosisAplikasi: "3 - 5 ml/liter air langsung disemprotkan pada gulma hijau yang aktif tumbuh.",
+    phi: "Non-Panen",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P3",
+  },
+  {
+    id: "4",
+    name: "PUPUK",
+    activeIngredient: "NPK 20-15-15 + Magnesium & Boron",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mempercepat pertumbuhan daun, tunas, dan memperkuat vigor bibit muda tanaman hortikultura.",
+    tanamanSasaran: ["Padi", "Sayuran Daun", "Cabai", "Jeruk"],
+    dosisAplikasi: "10 - 30 g per 10 liter air. Semprot tiap 8-10 hari sekali pada fase vegetatif.",
+    phi: "Aman / Organik Kompatibel",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P4",
+  },
+  {
+    id: "5",
+    name: "PUPUK",
+    activeIngredient: "Profenofos 500 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Efektif menembus jaringan tanaman membasmi ulat grayak, trips, dan kutu kebul.",
+    tanamanSasaran: ["Bawang Merah", "Cabai", "Kubis", "Semangka"],
+    dosisAplikasi: "1,5 - 2 ml/liter air disemprotkan saat populasi hama mencapai ambang ekonomi.",
+    phi: "10 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P5",
+  },
+  {
+    id: "6",
+    name: "PUPUK",
+    activeIngredient: "Azoksistrobin 200 g/l + Difenokonazol 125 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mengendalikan blast padi, hawar daun, serta tanaman lebih hijau dan berbulir padat.",
+    tanamanSasaran: ["Padi", "Bawang", "Mangga", "Jagung"],
+    dosisAplikasi: "0,5 - 1 ml/liter air pada fase bunting & keluar malai 70% secara serentak.",
+    phi: "14 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P6",
+  },
+];
+
 export type Commodity = { id: string; name: string; unit: string };
 export type Market = { id: string; name: string; city: string };
 export type PricePoint = {

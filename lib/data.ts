@@ -3,16 +3,18 @@ import {
   MOCK_ARTICLES,
   MOCK_COMMODITIES,
   MOCK_MARKETS,
+  MOCK_OBAT,
   MOCK_PRICES,
   type Article,
   type ArticleCategory,
   type Commodity,
   type Market,
+  type Obat,
   type PricePoint,
 } from "./mock";
 
-export type { Article, ArticleCategory, Commodity, Market, PricePoint };
-export { CATEGORY_LABEL } from "./mock";
+export type { Article, ArticleCategory, Commodity, Market, Obat, PricePoint };
+export { CATEGORY_LABEL, CATEGORY_OBAT_LABEL } from "./mock";
 
 export type ArticleFilter = { category?: ArticleCategory; q?: string };
 
@@ -90,6 +92,11 @@ export async function getArticleSlugs(): Promise<string[]> {
     }
   }
   return MOCK_ARTICLES.map((a) => a.slug);
+}
+
+// ---- Obat ----
+export async function getObats(): Promise<Obat[]> {
+  return MOCK_OBAT;
 }
 
 // ---- Harga pasar ----
