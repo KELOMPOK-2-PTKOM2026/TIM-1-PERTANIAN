@@ -1,4 +1,5 @@
 import { PrismaClient, ArticleCategory } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +16,42 @@ const MARKETS = [
   { name: "Pasar Muntilan", city: "Magelang" },
   { name: "Pasar Beringharjo", city: "Yogyakarta" },
   { name: "Pasar Induk Kramat Jati", city: "Jakarta Timur" },
+];
+
+const PESTICIDES = [
+  {
+    slug: "proclaim-5-sg",
+    name: "Proclaim 5 SG",
+    type: "INSEKTISIDA" as const,
+    activeIngredient: "Emamektin benzoat 5%",
+    targets: "Ulat grayak (Spodoptera frugiperda) pada jagung, bawang merah, dan sayuran daun",
+    dosage: "0,2–0,4 g/liter air",
+    packaging: "25 g / 50 g",
+    manufacturer: "Syngenta",
+    description: "Insektisida kontak dan lambung untuk pengendalian ulat.",
+  },
+  {
+    slug: "amistar-top-325-sc",
+    name: "Amistar Top 325 SC",
+    type: "FUNGISIDA" as const,
+    activeIngredient: "Azoksistrobin + Difenokonazol",
+    targets: "Antraknosa (patek) pada cabai, blas daun dan hawar pelepah padi",
+    dosage: "0,5–1 ml/liter air",
+    packaging: "100 ml / 250 ml",
+    manufacturer: "Syngenta",
+    description: "Fungisida sistemik berspektrum luas.",
+  },
+  {
+    slug: "demolish-18-ec",
+    name: "Demolish 18 EC",
+    type: "AKARISIDA" as const,
+    activeIngredient: "Abamektin 18 g/l",
+    targets: "Thrips, tungau merah, dan kutu kebul pada sayuran hortikultura",
+    dosage: "0,75 ml/liter air",
+    packaging: "100 ml",
+    manufacturer: "DGW",
+    description: "Insektisida/akarisida translaminar.",
+  },
 ];
 
 type SeedArticle = {
@@ -122,7 +159,7 @@ async function main() {
     await prisma.commodity.upsert({
       where: { name: c.name },
       update: { unit: c.unit },
-      create: c,
+      create: { name: c.name, unit: c.unit },
     });
   }
   for (const m of MARKETS) {
@@ -175,7 +212,25 @@ async function main() {
     await prisma.price.createMany({ data: rows.slice(i, i + 100) });
   }
 
-  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga`);
+  // Info obat (Fase 2)
+  for (const o of PESTICIDES) {
+    await prisma.pesticide.upsert({ where: { slug: o.slug }, update: {}, create: o });
+  }
+
+  // Admin awal (Fase 2). Ganti SEED_ADMIN_PASSWORD di produksi.
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "admin12345";
+  await prisma.user.upsert({
+    where: { email: "admin@tanimaju.id" },
+    update: {},
+    create: {
+      email: "admin@tanimaju.id",
+      name: "Admin TaniMaju",
+      role: "ADMIN",
+      passwordHash: await bcrypt.hash(adminPassword, 10),
+    },
+  });
+
+  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, ${PESTICIDES.length} obat, 1 admin`);
 }
 
 main()

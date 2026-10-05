@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
+import LogoTani from "@/components/logo tanimaju.png";
+import SignIn from "@/components/icon sign-in.png";
 
 export type NavStatus = "active" | "soon";
 export type NavItem = {
@@ -11,20 +14,10 @@ export type NavItem = {
   status: NavStatus;
   fitur?: string;
   children?: NavItem[];
-  // Path lain yang harus menyalakan pill aktif untuk item ini, mis. route
-  // "/harga-pasar-login" tetap menyalakan menu "Harga Pasar".
+  // Path lain yang ikut menyalakan menu ini, mis. "/harga-pasar-login" -> "Harga Pasar".
   activePaths?: string[];
 };
 
-// Varian navbar: "default" untuk halaman publik yang sudah ada,
-// "harga" untuk desain /harga-pasar-login (menu+Tentang, tombol Sign In
-// polos di kanan, logo lime, tanpa badge "Segera").
-export type NavVariant = "default" | "harga";
-
-// KUNCI PLAN: menu Fase 2 (info obat, login) tetap tampil dengan
-// status "soon" -> Info Obat mengarah ke /obat (stub Fase 2),
-// Login mengarah ke /segera-hadir (stub auth OAuth Google).
-// Konsultasi TIDAK ada di navbar publik — hanya di dashboard (Fase 2, wajib login).
 export const NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: "/", status: "active" },
   { label: "Artikel", href: "/artikel", status: "active" },
@@ -34,10 +27,11 @@ export const NAV_ITEMS: NavItem[] = [
     status: "active",
     activePaths: ["/harga-pasar-login"],
   },
+  { label: "Tentang", href: "/tentang", status: "active" },
   {
     label: "Info Obat",
     href: "/obat",
-    status: "soon",
+    status: "active",
     fitur: "obat",
     children: [
       { label: "Herbisida", href: "/obat/jenis/herbisida", status: "soon" },
@@ -46,22 +40,6 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
     ],
   },
-  { label: "Login", href: "/segera-hadir?fitur=login", status: "soon", fitur: "login" },
-];
-
-// Susunan menu sesuai desain halaman Harga Pasar. Tidak ada "Login"
-// karena sudah digantikan tombol "Sign In" di kanan navbar.
-const NAV_ITEMS_HARGA: NavItem[] = [
-  { label: "Beranda", href: "/", status: "active" },
-  { label: "Artikel", href: "/artikel", status: "active" },
-  {
-    label: "Harga Pasar",
-    href: "/harga-pasar",
-    status: "active",
-    activePaths: ["/harga-pasar-login"],
-  },
-  { label: "Tentang", href: "/segera-hadir?fitur=tentang", status: "active" },
-  { label: "Info Obat", href: "/obat", status: "active", fitur: "obat" },
 ];
 
 function SoonBadge() {
@@ -72,91 +50,58 @@ function SoonBadge() {
   );
 }
 
-function SignInIcon({ className }: { className?: string }) {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-      <path d="M10 17l5-5-5-5M15 12H3" />
-    </svg>
-  );
-}
-
-export default function Navbar({ variant = "default" }: { variant?: NavVariant }) {
+export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isHarga = variant === "harga";
-  const items = isHarga ? NAV_ITEMS_HARGA : NAV_ITEMS;
-  // Desain halaman Harga Pasar tidak memuat badge "Segera".
-  const badge = (item: NavItem) => !isHarga && item.status === "soon";
-
-  const isActive = (item: NavItem) =>
-    item.status === "active" &&
-    (pathname === item.href.split("?")[0] ||
-      item.activePaths?.includes(pathname) === true);
-
   return (
-    <header
-      className={`sticky top-0 z-40 text-white shadow ${
-        isHarga
-          ? "bg-gradient-to-r from-[#04382a] to-[#065f46]"
-          : "bg-[#064e3b]"
-      }`}
-    >
+    <header className="font-[family-name:var(--font-navbar)] sticky top-0 z-40 bg-[#084734] text-white shadow">
+      {/* Kontainer Utama menggunakan Grid 3 Kolom pada Desktop */}
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        {isHarga ? (
-          // Logo file yang sama dengan Footer (public/tanimajulogo.png).
-          <Link href="/" className="flex shrink-0 items-center">
-            <img
-              src="/tanimajulogo.png"
-              alt="Tanimaju"
-              className="h-9 w-auto sm:h-10"
+        {/* BAGIAN 1 (KIRI): LOGO */}
+        <div className="flex items-center justify-start">
+          <Link href="/" className="flex items-center text-lg -ml-10">
+            <Image
+              src={LogoTani}
+              alt="Logo TaniMaju"
+              width={128}
+              height={32}
+              className="h-[32px] w-[128px] object-contain"
             />
           </Link>
-        ) : (
-          <Link
-            href="/"
-            className="flex shrink-0 items-center gap-2 text-base font-bold sm:text-lg"
-          >
-            <span aria-hidden className="text-xl sm:text-2xl">
-              🌾
-            </span>
-            TaniMaju
-          </Link>
-        )}
+        </div>
 
-        <button
-          className="-mr-2 rounded p-2 text-xl text-white hover:bg-white/10 md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Tutup menu" : "Buka menu"}
-          aria-expanded={open}
+        {/* BAGIAN 2 (TENGAH): MENU NAVIGASI DESKTOP */}
+        <nav
+          className="hidden items-center justify-center gap-1 md:flex"
+          aria-label="Navigasi utama"
         >
-          ☰
-        </button>
-
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Navigasi utama">
-          {items.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <div key={item.label} className="group relative">
               <Link
                 href={item.href}
                 aria-disabled={item.status === "soon"}
-                title={item.status === "soon" ? "Segera hadir di Fase 2" : undefined}
-                className={`flex items-center rounded-full px-3 py-2 text-sm font-medium transition ${
-                  isActive(item)
-                    ? "bg-lime-300 font-semibold text-tani-950 hover:bg-lime-200"
-                    : "text-white/90 hover:bg-white/10"
-                } ${item.status === "soon" && !isHarga ? "cursor-not-allowed opacity-80" : ""}`}
+                title={
+                  item.status === "soon" ? "Segera hadir di Fase 2" : undefined
+                }
+                className={`flex items-center rounded-md px-3 py-1 text-sm font-medium hover:bg-[#CDEF7A] hover:text-black ${
+                  (pathname === item.href.split("?")[0] ||
+                    item.activePaths?.includes(pathname)) &&
+                  item.status === "active"
+                    ? "bg-tani-700"
+                    : ""
+                } ${item.status === "soon" ? "cursor-not-allowed opacity-80" : ""}`}
               >
                 {item.label}
-                {badge(item) && <SoonBadge />}
+                {item.status === "soon" && <SoonBadge />}
               </Link>
               {item.children && (
-                <div className="invisible absolute left-0 top-full w-48 rounded-b-lg bg-[#064e3b] p-1 opacity-0 shadow-lg group-hover:visible group-hover:opacity-100">
+                <div className="invisible absolute left-0 top-full w-48 rounded-b-lg bg-tani-800 p-1 opacity-0 shadow-lg group-hover:visible group-hover:opacity-100">
                   {item.children.map((c) => (
                     <Link
                       key={c.label}
                       href={c.href}
-                      className="flex items-center rounded px-3 py-2 text-sm hover:bg-white/10"
+                      className="flex items-center rounded px-3 py-2 text-sm hover:bg-tani-700"
                     >
                       {c.label}
                       <SoonBadge />
@@ -166,40 +111,56 @@ export default function Navbar({ variant = "default" }: { variant?: NavVariant }
               )}
             </div>
           ))}
-
-          {isHarga && (
-            <Link
-              href="/segera-hadir?fitur=login"
-              className="ml-3 inline-flex items-center gap-1.5 text-sm font-semibold text-white/95 transition hover:text-lime-300"
-            >
-              <SignInIcon className="shrink-0" />
-              Sign In
-            </Link>
-          )}
         </nav>
+
+        {/* BAGIAN 3 (KANAN): ELEMEN KANAN (Contoh: Tombol Login/Masuk) */}
+        <div className="hidden items-center justify-end md:flex -mx-15">
+          <Link
+            href="/segera-hadir?fitur=login"
+            className="flex items-center rounded-lg  px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-amber-400"
+          >
+            <Image
+              src={SignIn}
+              alt="Sign In"
+              className="h-[15px] w-[17px] object-contain"
+            />
+            <p className="px-3 text-white text-18px">Sign In</p>
+          </Link>
+        </div>
+
+        {/* TOMBOL HAMBURGER MOBILE (Tampil di kanan khusus tampilan HP) */}
+        <button
+          className="rounded p-2 text-white hover:bg-tani-700 md:hidden"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Buka menu"
+          aria-expanded={open}
+        >
+          ☰
+        </button>
       </div>
 
+      {/* NAVIGASI SELULER (MOBILE) */}
       {open && (
         <nav
-          className="max-h-[calc(100dvh-3.25rem)] overflow-y-auto overscroll-contain border-t border-white/15 px-4 pb-4 md:hidden"
+          className="border-t border-tani-700 px-4 pb-4 md:hidden"
           aria-label="Navigasi seluler"
         >
-          {items.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="flex items-center border-b border-white/10 py-3 text-sm font-medium"
+                className="flex items-center border-b border-tani-700/60 py-3 text-sm font-medium"
               >
                 {item.label}
-                {badge(item) && <SoonBadge />}
+                {item.status === "soon" && <SoonBadge />}
               </Link>
               {item.children?.map((c) => (
                 <Link
                   key={c.label}
                   href={c.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center py-2 pl-4 text-sm text-emerald-50"
+                  className="flex items-center py-2 pl-4 text-sm text-tani-100"
                 >
                   ↳ {c.label}
                   <SoonBadge />
@@ -207,17 +168,17 @@ export default function Navbar({ variant = "default" }: { variant?: NavVariant }
               ))}
             </div>
           ))}
-
-          {isHarga && (
+          {/* Tombol Login Mobile */}
+          <div className="mt-3">
             <Link
               href="/segera-hadir?fitur=login"
               onClick={() => setOpen(false)}
-              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold"
+              className="flex items-center justify-center rounded-lg bg-amber-500 py-2 text-sm font-semibold text-gray-900"
             >
-              <SignInIcon />
-              Sign In
+              Login
+              <SoonBadge />
             </Link>
-          )}
+          </div>
         </nav>
       )}
     </header>

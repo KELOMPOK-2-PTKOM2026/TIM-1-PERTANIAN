@@ -1,4 +1,6 @@
-// Validasi env Fase 2 (stub).
-// TODO Fase 2: validasi DATABASE_URL (+ DIRECT_URL untuk migrate) dan
-// GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET untuk OAuth.
-export {};
+// Validasi env. AUTH_SECRET wajib untuk session Auth.js; DATABASE_URL opsional (mode mock).
+export function assertAuthEnv() {
+  if (!process.env.AUTH_SECRET) {
+    throw new Error("AUTH_SECRET belum diisi. Jalankan `npx auth secret` lalu isi .env");
+  }
+}

@@ -17,10 +17,10 @@
 }
 
 body {
-  background: var(--color-tani-50);
+  background: #ffffff;
   color: #1a2e1a;
   /* Font desain: Plus Jakarta Sans, berlaku untuk semua route. */
-  font-family: var(--font-jakarta), Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta-sans), Arial, Helvetica, sans-serif;
 }
 
 /* Animasi lembut untuk blob gradient + gelombang di landing page */

@@ -16,7 +16,112 @@ export type Article = {
   tags: string[];
   publishedAt: string; // ISO
   views: number;
+  imageUrl: string;
+  author: string;
 };
+
+export type Obat = {
+  id: string;
+  name: string;
+  activeIngredient: string;
+  category: string;
+  price: number;
+  unit: string;
+  kegunaanSasaran: string;
+  tanamanSasaran: string[];
+  dosisAplikasi: string;
+  phi: string;
+  imageUrl: string;
+};
+
+export const CATEGORY_OBAT_LABEL: Record<string, string> = {
+  PUPUK: "Pupuk & Nutrisi",
+  INSEKTISIDA: "Insektisida",
+  FUNGISIDA: "Fungisida",
+  HERBISIDA: "Herbisida",
+  LAINNYA: "Lainnya",
+};
+
+export const MOCK_OBAT: Obat[] = [
+  {
+    id: "1",
+    name: "PUPUK",
+    activeIngredient: "Propineb 70% + Seng (Zinc)",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mengendalikan penyakit bercak daun, busuk phytophthora, dan antraknosa pada tanaman...",
+    tanamanSasaran: ["Cabai", "Tomat", "Padi", "Bawang Merah", "Kentang"],
+    dosisAplikasi: "1,5 - 2 g/liter air merata pada daun di pagi hari saat gejala awal timbul.",
+    phi: "7 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P1",
+  },
+  {
+    id: "2",
+    name: "PUPUK",
+    activeIngredient: "Fipronil 50 g/l + ZPT",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Pengendalian hama penggerek batang dan kutu daun dengan zat pengatur tumbuh (ZPT).",
+    tanamanSasaran: ["Padi Sawah", "Jagung", "Cabai", "Kedelai"],
+    dosisAplikasi: "1 - 1,5 ml/liter air. Semprot volume tinggi pada pangkal dan daun sasaran.",
+    phi: "14 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P2",
+  },
+  {
+    id: "3",
+    name: "PUPUK",
+    activeIngredient: "Glifosat Isopropilamina 486 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Membasmi gulma berdaun lebar dan sempit tanpa merusak tekstur tanah gembur.",
+    tanamanSasaran: ["Lahan Nol", "Sawit", "Karet", "Jagung Olah"],
+    dosisAplikasi: "3 - 5 ml/liter air langsung disemprotkan pada gulma hijau yang aktif tumbuh.",
+    phi: "Non-Panen",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P3",
+  },
+  {
+    id: "4",
+    name: "PUPUK",
+    activeIngredient: "NPK 20-15-15 + Magnesium & Boron",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mempercepat pertumbuhan daun, tunas, dan memperkuat vigor bibit muda tanaman hortikultura.",
+    tanamanSasaran: ["Padi", "Sayuran Daun", "Cabai", "Jeruk"],
+    dosisAplikasi: "10 - 30 g per 10 liter air. Semprot tiap 8-10 hari sekali pada fase vegetatif.",
+    phi: "Aman / Organik Kompatibel",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P4",
+  },
+  {
+    id: "5",
+    name: "PUPUK",
+    activeIngredient: "Profenofos 500 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Efektif menembus jaringan tanaman membasmi ulat grayak, trips, dan kutu kebul.",
+    tanamanSasaran: ["Bawang Merah", "Cabai", "Kubis", "Semangka"],
+    dosisAplikasi: "1,5 - 2 ml/liter air disemprotkan saat populasi hama mencapai ambang ekonomi.",
+    phi: "10 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P5",
+  },
+  {
+    id: "6",
+    name: "PUPUK",
+    activeIngredient: "Azoksistrobin 200 g/l + Difenokonazol 125 g/l",
+    category: "PUPUK",
+    price: 48000,
+    unit: "pack 250g",
+    kegunaanSasaran: "Mengendalikan blast padi, hawar daun, serta tanaman lebih hijau dan berbulir padat.",
+    tanamanSasaran: ["Padi", "Bawang", "Mangga", "Jagung"],
+    dosisAplikasi: "0,5 - 1 ml/liter air pada fase bunting & keluar malai 70% secara serentak.",
+    phi: "14 Hari",
+    imageUrl: "https://placehold.co/80x80/CDEDB3/084734?text=P6",
+  },
+];
 
 export type Commodity = { id: string; name: string; unit: string };
 export type Market = { id: string; name: string; city: string };
@@ -41,6 +146,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["#TanamanCabai", "#CabaiRawit", "thrips"],
     publishedAt: new Date(now - 1 * day).toISOString(),
     views: 214,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Thrips",
+    author: "Putu Laura",
   },
   {
     slug: "pupuk-kandang-jangan-asal-pakai",
@@ -52,6 +159,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["pupuk dasar", "#PHTANAH", "#TanahGembur"],
     publishedAt: new Date(now - 2 * day).toISOString(),
     views: 186,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Pupuk+Kandang",
+    author: "I Made Wirawan",
   },
   {
     slug: "olah-lahan-cabai-anti-gagal-musim-hujan",
@@ -63,6 +172,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["#TanamanCabai", "olah lahan", "musim hujan"],
     publishedAt: new Date(now - 3 * day).toISOString(),
     views: 342,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Musim+Hujan",
+    author: "Siti Rahayu",
   },
   {
     slug: "kisah-petani-milenial-70-juta-sekali-petik",
@@ -74,10 +185,13 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["petani milenial", "#CabaiRawit"],
     publishedAt: new Date(now - 4 * day).toISOString(),
     views: 528,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Petani+Milenial",
+    author: "Budi Santoso",
   },
   {
     slug: "bedengan-besar-vs-kecil-cabai",
-    title: "Bedengan Besar vs Kecil: Mana yang Lebih Menguntungkan untuk Cabai?",
+    title:
+      "Bedengan Besar vs Kecil: Mana yang Lebih Menguntungkan untuk Cabai?",
     excerpt:
       "Lebar bedengan memengaruhi populasi tanaman, sirkulasi udara, dan kemudahan perawatan. Simak perbandingannya.",
     contentMd: `## Bedengan Besar (1 Lajur)\n\n- Sirkulasi udara baik, kelembapan rendah, serangan jamur lebih kecil.\n- Populasi ±14.000–16.000 tanaman/ha.\n- Cocok untuk musim hujan dan dataran rendah yang lembap.\n\n## Bedengan Kecil (2 Lajur)\n\n- Populasi tinggi ±20.000–24.000 tanaman/ha, potensi hasil per hektar lebih besar.\n- Butuh drainase ekstra dan pengendalian penyakit lebih intensif.\n- Cocok untuk musim kemarau dengan irigasi terjamin.\n\n## Kesimpulan\n\nTidak ada yang mutlak lebih baik — sesuaikan dengan musim, topografi, dan kemampuan perawatan. Bagi pemula, 1 lajur lebih aman.`,
@@ -85,6 +199,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["bedengan", "#TanamanCabai"],
     publishedAt: new Date(now - 5 * day).toISOString(),
     views: 197,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Bedengan",
+    author: "Dewi Anggraini",
   },
   {
     slug: "penyebab-bunga-rontok-dan-cara-mengatasi",
@@ -96,6 +212,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["#buahrontok", "#PUPUKBUNGABUAH"],
     publishedAt: new Date(now - 6 * day).toISOString(),
     views: 263,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Bunga+Rontok",
+    author: "Ahmad Fauzi",
   },
   {
     slug: "waktu-terbaik-tanam-cabai-kejar-harga",
@@ -107,10 +225,13 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["harga pasar", "#BALIKMODAL"],
     publishedAt: new Date(now - 7 * day).toISOString(),
     views: 311,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Harga+Cabai",
+    author: "Rina Kartika",
   },
   {
     slug: "pelajar-sma-sukses-cabai-greenhouse",
-    title: "Muda Penuh Karya: Pelajar SMA Sukses Budidaya Cabai dengan Greenhouse",
+    title:
+      "Muda Penuh Karya: Pelajar SMA Sukses Budidaya Cabai dengan Greenhouse",
     excerpt:
       "Keterbatasan lahan kota bukan halangan. Greenhouse bambu sederhana menjadi model urban farming yang inspiratif.",
     contentMd: `## Greenhouse Bambu Low-Cost\n\nRangka bambu + plastik UV bekas pakai menekan biaya hingga sepertiganya dibanding baja ringan. Ventilasi samping menjaga suhu tetap ideal untuk cabai.\n\n## Hasil\n\nDengan 500 polibag, panen perdana menghasilkan puluhan kilogram yang dijual ke warung sekitar dan tetangga — perputaran kas positif sejak musim pertama.\n\nUrban farming seperti ini bisa direplikasi di pekarangan sekolah maupun rumah.`,
@@ -118,6 +239,8 @@ export const MOCK_ARTICLES: Article[] = [
     tags: ["urban farming", "greenhouse"],
     publishedAt: new Date(now - 8 * day).toISOString(),
     views: 154,
+    imageUrl: "https://placehold.co/460x192/084734/ffffff?text=Greenhouse",
+    author: "Eko Prasetyo",
   },
 ];
 
@@ -155,15 +278,22 @@ export const MOCK_PRICES: PricePoint[] = (() => {
   const rows: PricePoint[] = [];
   for (const c of MOCK_COMMODITIES) {
     for (const m of MOCK_MARKETS) {
-      const adj = m.id === "m-kramat" ? 1.12 : m.id === "m-beringharjo" ? 1.05 : 1;
+      const adj =
+        m.id === "m-kramat" ? 1.12 : m.id === "m-beringharjo" ? 1.05 : 1;
       for (let d = 29; d >= 0; d--) {
         const date = new Date();
         date.setHours(0, 0, 0, 0);
         date.setDate(date.getDate() - d);
         const wave = Math.sin(d / 3.1) * 0.05 + Math.cos(d / 7.7) * 0.04;
         const noise = (((29 - d) * 7919) % 13) / 13 - 0.5;
-        const price = Math.round(((BASE[c.id] * adj) * (1 + wave + noise * 0.06)) / 50) * 50;
-        rows.push({ commodityId: c.id, marketId: m.id, price, date: toISODate(date) });
+        const price =
+          Math.round((BASE[c.id] * adj * (1 + wave + noise * 0.06)) / 50) * 50;
+        rows.push({
+          commodityId: c.id,
+          marketId: m.id,
+          price,
+          date: toISODate(date),
+        });
       }
     }
   }

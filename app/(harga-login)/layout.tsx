@@ -1,10 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// Layout khusus /harga-pasar-login: sama seperti (public) tapi Navbar
-// memakai variant "harga" sesuai desain (menu + Tentang, tombol Sign In
-// polos di kanan, logo lime). Dipisah supaya halaman publik lain
-// (/, /artikel, /harga-pasar, /obat) tidak ikut berubah.
+// Layout khusus /harga-pasar-login: Navbar publik (menu "Harga Pasar"
+// ikut aktif lewat activePaths) + Footer.
 // TODO Fase 2: setelah Auth.js v5 siap, ganti stub "Sign In" di navbar
 // dengan menu akun (nama + logout) untuk sesi yang sudah login.
 export default function HargaLoginLayout({
@@ -16,7 +14,7 @@ export default function HargaLoginLayout({
   // (public)/layout.tsx. Font sudah global di body (globals.css).
   return (
     <div className="flex min-h-full flex-1 flex-col">
-      <Navbar variant="harga" />
+      <Navbar />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4">{children}</main>
       <Footer />
     </div>

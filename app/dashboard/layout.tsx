@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { requireUser } from "@/modules/auth/auth.guard";
+import { logoutAction } from "@/modules/auth/auth.actions";
 
 // Layout dashboard: guard login Fase 2.
-// TODO Fase 2: check session (Auth.js), redirect ke /login bila belum login.
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+// Guard server-side (proxy.ts hanya cek optimistis).
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const user = await requireUser();
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
       <nav className="mb-6 flex gap-4 border-b pb-4 text-sm font-medium">
@@ -12,6 +15,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Link href="/dashboard/konsultasi/arsip" className="hover:underline">
           Arsip Q&A
         </Link>
+        <form action={logoutAction} className="ml-auto flex items-center gap-3">
+          <span className="text-stone-600">{user.name}</span>
+          <button type="submit" className="hover:underline">
+            Logout
+          </button>
+        </form>
       </nav>
       {children}
     </div>

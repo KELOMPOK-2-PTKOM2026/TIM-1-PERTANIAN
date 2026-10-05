@@ -1,4 +1,4 @@
-// MVP — tanpa User/Auth (Auth masuk Fase 2, lihat PLAN.MD)
+// MVP + Fase 2 Auth (User + Role).
 // Provider postgres (Neon). Isi DATABASE_URL + DIRECT_URL dari dashboard Neon.
 generator client {
   provider = "prisma-client-js"
@@ -23,6 +23,7 @@ model Article {
   excerpt     String
   contentMd   String          @db.Text
   coverUrl    String?
+  author      String?
   category    ArticleCategory
   tags        String[]
   publishedAt DateTime?
@@ -58,4 +59,48 @@ model Price {
   market    Market    @relation(fields: [marketId], references: [id], onDelete: Cascade)
 
   @@index([commodityId, marketId, date])
+}
+
+// Fase 2 — Auth (email + password)
+enum Role {
+  ADMIN
+  PAKAR
+  PETANI
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(PETANI)
+  name         String
+  city         String?
+  whatsapp     String?
+  createdAt    DateTime @default(now())
+}
+
+// Fase 2 — Info Obat (dikelola admin)
+enum PesticideType {
+  HERBISIDA
+  INSEKTISIDA
+  FUNGISIDA
+  AKARISIDA
+}
+
+model Pesticide {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  name             String
+  type             PesticideType
+  activeIngredient String
+  targets          String
+  dosage           String
+  packaging        String?
+  manufacturer     String?
+  description      String        @db.Text
+  imageUrl         String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([type])
 }

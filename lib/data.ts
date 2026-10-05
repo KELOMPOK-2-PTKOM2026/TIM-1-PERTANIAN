@@ -3,16 +3,18 @@ import {
   MOCK_ARTICLES,
   MOCK_COMMODITIES,
   MOCK_MARKETS,
+  MOCK_OBAT,
   MOCK_PRICES,
   type Article,
   type ArticleCategory,
   type Commodity,
   type Market,
+  type Obat,
   type PricePoint,
 } from "./mock";
 
-export type { Article, ArticleCategory, Commodity, Market, PricePoint };
-export { CATEGORY_LABEL } from "./mock";
+export type { Article, ArticleCategory, Commodity, Market, Obat, PricePoint };
+export { CATEGORY_LABEL, CATEGORY_OBAT_LABEL } from "./mock";
 
 export type ArticleFilter = { category?: ArticleCategory; q?: string };
 
@@ -23,6 +25,7 @@ export async function getArticles(filter: ArticleFilter = {}): Promise<Article[]
     try {
       const rows = await prisma.article.findMany({
         where: {
+          publishedAt: { not: null }, // draft tidak tampil di situs
           ...(category ? { category } : {}),
           ...(q
             ? { OR: [{ title: { contains: q, mode: "insensitive" } }, { tags: { has: q } }] }
@@ -39,6 +42,8 @@ export async function getArticles(filter: ArticleFilter = {}): Promise<Article[]
         tags: r.tags,
         publishedAt: (r.publishedAt ?? r.createdAt).toISOString(),
         views: r.views,
+        imageUrl: r.coverUrl ?? "", // kolom DB: coverUrl
+        author: r.author ?? "Tim Tanimaju",
       }));
     } catch {
       // jatuh ke mock
@@ -58,7 +63,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   if (prisma) {
     try {
       const r = await prisma.article.findUnique({ where: { slug } });
-      if (r)
+      if (r?.publishedAt)
         return {
           slug: r.slug,
           title: r.title,
@@ -68,6 +73,8 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
           tags: r.tags,
           publishedAt: (r.publishedAt ?? r.createdAt).toISOString(),
           views: r.views,
+          imageUrl: r.coverUrl ?? "", // kolom DB: coverUrl
+          author: r.author ?? "Tim Tanimaju",
         };
     } catch {
       // jatuh ke mock
@@ -79,13 +86,21 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 export async function getArticleSlugs(): Promise<string[]> {
   if (prisma) {
     try {
-      const rows = await prisma.article.findMany({ select: { slug: true } });
+      const rows = await prisma.article.findMany({
+        where: { publishedAt: { not: null } },
+        select: { slug: true },
+      });
       if (rows.length) return rows.map((r) => r.slug);
     } catch {
       // jatuh ke mock
     }
   }
   return MOCK_ARTICLES.map((a) => a.slug);
+}
+
+// ---- Obat ----
+export async function getObats(): Promise<Obat[]> {
+  return MOCK_OBAT;
 }
 
 // ---- Harga pasar ----
