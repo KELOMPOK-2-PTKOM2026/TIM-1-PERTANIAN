@@ -6,12 +6,13 @@ import { useState } from "react";
 import { logoutAction } from "@/modules/auth/auth.actions";
 import { AdminIcon, ADMIN_ICON } from "./ui";
 
-// Menu mengikuti tab navbar publik (Artikel, Harga Pasar, Info Obat) + Dashboard & Pengaturan.
+// Menu mengikuti tab navbar publik (Artikel, Harga Pasar, Info Obat, Tentang) + Dashboard & Pengaturan.
 const MENU = [
   { label: "Dashboard", href: "/admin", icon: ADMIN_ICON.grid },
   { label: "Artikel", href: "/admin/artikel", icon: ADMIN_ICON.doc },
   { label: "Harga Pasar", href: "/admin/harga", icon: ADMIN_ICON.trend },
   { label: "Info Obat", href: "/admin/obat", icon: ADMIN_ICON.flask },
+  { label: "Tentang", href: "/admin/tentang", icon: ADMIN_ICON.info },
   { label: "Pengaturan", href: "/admin/pengaturan", icon: ADMIN_ICON.gear },
 ];
 

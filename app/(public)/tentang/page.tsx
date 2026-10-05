@@ -1,65 +1,18 @@
+import { getTentangContent } from "@/modules/tentang/tentang.service";
+
 export const revalidate = 60;
 
-const missions = [
-  {
-    title: "Pemberdayaan Petani Muda",
-    description:
-      "Mendorong generasi muda untuk terjun ke bidang pertanian dengan pendekatan modern dan berkelanjutan.",
-  },
-  {
-    title: "Teknologi Pertanian Terjangkau",
-    description:
-      "Menyediakan akses teknologi pertanian yang mudah dipahami dan diterapkan oleh seluruh petani Indonesia.",
-  },
-  {
-    title: "Transparansi Rantai Pasok",
-    description:
-      "Membangun sistem rantai pasok yang adil dan transparan dari petani hingga konsumen akhir.",
-  },
-];
-
-const journey = [
-  {
-    year: "2026",
-    title: "Awal Mula di Lombok",
-    description:
-      "Tanimaju berawal dari kepedulian terhadap petani cabai di Lombok yang kesulitan mengakses informasi pertanian.",
-  },
-  {
-    year: "2026",
-    title: "Peluncuran di Generasi Petani Generasi 1",
-    description:
-      "Meluncurkan program edukasi pertanian digital untuk generasi muda petani di berbagai daerah.",
-  },
-  {
-    year: "2026",
-    title: "Ekspansi Layanan Terpadu Nasional",
-    description:
-      "Memperluas layanan ke seluruh Indonesia dengan platform terpadu untuk petani dan pemangku kepentingan.",
-  },
-];
-
-const team = [
-  { name: "I Ketut Pasek Oka Suntari", role: "Ketua Umum" },
-  { name: "Muhammad Naufal Azis", role: "Wakil Ketua Umum" },
-  { name: "Muhammad Alfarizi", role: "Sekretaris" },
-  { name: "Putu Luh Citra Dewi", role: "Bendahara" },
-  { name: "I Gede Suardika", role: "Anggota" },
-  { name: "Rian", role: "Anggota" },
-];
-
-export default function TentangPage() {
+export default async function TentangPage() {
+  const c = await getTentangContent();
   return (
     <div className="font-[family-name:var(--font-jakarta-sans)]">
       {/* Hero Section */}
       <section className="mx-auto max-w-6xl px-4 pt-8 pb-4">
         <h1 className="mx-auto max-w-3xl text-center text-[40px] font-extrabold leading-[44px] tracking-[-0.8px] text-[#002C17]">
-          Membawa Inovasi Teknologi ke Akar Pertanian Indonesia
+          {c.heroTitle}
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-center text-[16px] leading-[24px] text-[#414942]">
-          Kami berdedikasi memberdayakan petani lokal melalui ekosistem digital
-          terpadu dari sensor tanah presisi hingga akses pasar yang adil dan
-          transparan.
+          {c.heroSubtitle}
         </p>
       </section>
 
@@ -67,7 +20,7 @@ export default function TentangPage() {
       <section className="mx-auto max-w-6xl px-4 pb-8">
         <div className="relative mt-5 overflow-hidden rounded-2xl bg-[#084734] shadow-[0_8px_30px_0_rgba(19,78,74,0.90)]">
           <img
-            src="https://placehold.co/1200x400/084734/ffffff?text=Tanimaju"
+            src={c.heroImageUrl || "https://placehold.co/1200x400/084734/ffffff?text=Tanimaju"}
             alt="Tanimaju"
             className="h-96 w-full object-cover opacity-80 md:h-[448px]"
           />
@@ -83,7 +36,7 @@ export default function TentangPage() {
                 </svg>
               </div>
               <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
-                Membangun Masa Depan Pertanian
+                {c.heroBadge}
               </span>
             </div>
           </div>
@@ -93,16 +46,15 @@ export default function TentangPage() {
       {/* Misi & Dedikasi */}
       <section className="mx-auto max-w-6xl px-4 py-8">
         <h2 className="text-center text-[28px] font-extrabold leading-[32px] text-[#084734]">
-          Misi & Dedikasi Tanimaju
+          {c.missionTitle}
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-center text-[14px] leading-[20px] text-[#404847]">
-          Tanimaju berkomitmen untuk membawa perubahan positif bagi petani
-          Indonesia melalui tiga pilar utama.
+          {c.missionSubtitle}
         </p>
         <div className="mt-8 grid gap-4 grid-cols-1 lg:grid-cols-3">
-          {missions.map((m) => (
+          {c.missions.map((m, i) => (
             <div
-              key={m.title}
+              key={i}
               className="rounded-2xl bg-[#CDEDB3] p-6 shadow-[0_4px_18px_0_rgba(19,78,74,0.10)]"
             >
               <h3 className="text-[16px] font-bold leading-[20px] text-[#084734]">
@@ -119,16 +71,15 @@ export default function TentangPage() {
       {/* Perjalanan */}
       <section className="mx-auto max-w-6xl px-4 py-8">
         <h2 className="text-center text-[28px] font-extrabold leading-[32px] text-[#084734]">
-          Perjalanan Tanimaju
+          {c.journeyTitle}
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-center text-[14px] leading-[20px] text-[#404847]">
-          Langkah-langkah penting dalam perjalanan kami membangun ekosistem
-          pertanian yang lebih baik.
+          {c.journeySubtitle}
         </p>
         <div className="mt-8 grid gap-4 grid-cols-1 lg:grid-cols-3">
-          {journey.map((j) => (
+          {c.journey.map((j, i) => (
             <div
-              key={j.title}
+              key={i}
               className="rounded-2xl bg-[#CDEDB3] p-6 shadow-[0_4px_18px_0_rgba(19,78,74,0.10)]"
             >
               <span className="inline-block rounded-full bg-[#084734] px-3 py-1 text-[12px] font-bold text-white">
@@ -148,21 +99,24 @@ export default function TentangPage() {
       {/* Profil Anggota */}
       <section className="mx-auto max-w-6xl px-4 py-8 pb-16">
         <h2 className="text-center text-[28px] font-extrabold leading-[32px] text-[#084734]">
-          Profil Anggota Tanimaju
+          {c.teamTitle}
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-center text-[14px] leading-[20px] text-[#404847]">
-          Orang-orang di balik Tanimaju yang berdedikasi untuk kemajuan
-          pertanian Indonesia.
+          {c.teamSubtitle}
         </p>
         <div className="mt-8 grid gap-4 grid-cols-1 lg:grid-cols-3">
-          {team.map((t) => (
+          {c.team.map((t, i) => (
             <div
-              key={t.name}
+              key={i}
               className="flex flex-col items-center rounded-2xl bg-white p-6 shadow-[0_4px_18px_0_rgba(19,78,74,0.10)]"
             >
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#CDEDB3] text-[24px] font-bold text-[#084734]">
-                {t.name.charAt(0)}
-              </div>
+              {t.photoUrl ? (
+                <img src={t.photoUrl} alt={t.name} className="h-20 w-20 rounded-full object-cover" />
+              ) : (
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#CDEDB3] text-[24px] font-bold text-[#084734]">
+                  {t.name.charAt(0)}
+                </div>
+              )}
               <h3 className="mt-4 text-[15px] font-bold leading-[18px] text-[#084734]">
                 {t.name}
               </h3>
