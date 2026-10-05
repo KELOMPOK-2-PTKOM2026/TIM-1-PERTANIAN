@@ -14,12 +14,19 @@ export type NavItem = {
   status: NavStatus;
   fitur?: string;
   children?: NavItem[];
+  // Path lain yang ikut menyalakan menu ini, mis. "/harga-pasar-login" -> "Harga Pasar".
+  activePaths?: string[];
 };
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Beranda", href: "/", status: "active" },
   { label: "Artikel", href: "/artikel", status: "active" },
-  { label: "Harga Pasar", href: "/harga-pasar", status: "active" },
+  {
+    label: "Harga Pasar",
+    href: "/harga-pasar",
+    status: "active",
+    activePaths: ["/harga-pasar-login"],
+  },
   { label: "Tentang", href: "/tentang", status: "active" },
   {
     label: "Info Obat",
@@ -78,7 +85,8 @@ export default function Navbar() {
                   item.status === "soon" ? "Segera hadir di Fase 2" : undefined
                 }
                 className={`flex items-center rounded-md px-3 py-1 text-sm font-medium hover:bg-[#CDEF7A] hover:text-black ${
-                  pathname === item.href.split("?")[0] &&
+                  (pathname === item.href.split("?")[0] ||
+                    item.activePaths?.includes(pathname)) &&
                   item.status === "active"
                     ? "bg-tani-700"
                     : ""

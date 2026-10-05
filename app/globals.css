@@ -19,5 +19,48 @@
 body {
   background: #ffffff;
   color: #1a2e1a;
-  font-family: Arial, Helvetica, sans-serif;
+  /* Font desain: Plus Jakarta Sans, berlaku untuk semua route. */
+  font-family: var(--font-jakarta-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Animasi lembut untuk blob gradient + gelombang di landing page */
+.wave-drift {
+  animation: wave-drift 16s ease-in-out infinite;
+}
+
+.wave-drift-slow {
+  animation-duration: 22s;
+  animation-direction: reverse;
+}
+
+.wave-lag {
+  animation: wave-lag 9s ease-in-out infinite;
+}
+
+@keyframes wave-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5rem, 1.5rem, 0) scale(1.06);
+  }
+}
+
+@keyframes wave-lag {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-1.75rem, 0.5rem, 0);
+  }
+}
+
+/* Hormati preferensi pengguna yang mengurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+  .wave-drift,
+  .wave-lag {
+    animation: none;
+  }
 }
