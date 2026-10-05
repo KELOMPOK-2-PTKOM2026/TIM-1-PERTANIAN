@@ -1,9 +1,8 @@
 // Layout auth polos (tanpa Navbar): login + register.
-// TODO Fase 2: Auth.js v5 + OAuth Google.
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-1 flex-col justify-center px-4 py-12">
-      {children}
+    <main className="flex min-h-screen flex-1 items-center justify-center bg-stone-100 px-4 py-12">
+      <div className="w-full max-w-4xl">{children}</div>
     </main>
   );
 }
