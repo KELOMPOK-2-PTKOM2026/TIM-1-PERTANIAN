@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 function SensorIcon() {
   return (
@@ -67,6 +68,8 @@ function WaveDivider() {
 export default function Home() {
   return (
     <>
+      {/* Beranda di luar (public), jadi Navbar dipasang manual di sini */}
+      <Navbar />
       <main>
         {/* Hero — sesuai desain landing page */}
         <section className="relative isolate overflow-hidden bg-gradient-to-b from-tani-50 via-white to-tani-50">

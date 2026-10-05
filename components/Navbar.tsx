@@ -27,7 +27,6 @@ export const NAV_ITEMS: NavItem[] = [
     status: "active",
     activePaths: ["/harga-pasar-login"],
   },
-  { label: "Tentang", href: "/tentang", status: "active" },
   {
     label: "Info Obat",
     href: "/obat",
@@ -40,6 +39,7 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
     ],
   },
+  { label: "Tentang", href: "/tentang", status: "active" },
 ];
 
 function SoonBadge() {
@@ -116,7 +116,7 @@ export default function Navbar() {
         {/* BAGIAN 3 (KANAN): ELEMEN KANAN (Contoh: Tombol Login/Masuk) */}
         <div className="hidden items-center justify-end md:flex -mx-15">
           <Link
-            href="/segera-hadir?fitur=login"
+            href="/login"
             className="flex items-center rounded-lg  px-4 py-2 text-sm font-semibold text-gray-900 transition hover:bg-amber-400"
           >
             <Image
@@ -171,12 +171,11 @@ export default function Navbar() {
           {/* Tombol Login Mobile */}
           <div className="mt-3">
             <Link
-              href="/segera-hadir?fitur=login"
+              href="/login"
               onClick={() => setOpen(false)}
               className="flex items-center justify-center rounded-lg bg-amber-500 py-2 text-sm font-semibold text-gray-900"
             >
-              Login
-              <SoonBadge />
+              Sign In
             </Link>
           </div>
         </nav>
