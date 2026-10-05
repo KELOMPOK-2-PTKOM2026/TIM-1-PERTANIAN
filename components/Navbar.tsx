@@ -27,7 +27,6 @@ export const NAV_ITEMS: NavItem[] = [
     status: "active",
     activePaths: ["/harga-pasar-login"],
   },
-  { label: "Tentang", href: "/tentang", status: "active" },
   {
     label: "Info Obat",
     href: "/obat",
@@ -40,6 +39,7 @@ export const NAV_ITEMS: NavItem[] = [
       { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
     ],
   },
+  { label: "Tentang", href: "/tentang", status: "active" },
 ];
 
 function SoonBadge() {
