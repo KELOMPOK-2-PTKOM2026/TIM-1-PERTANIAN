@@ -104,3 +104,10 @@ model Pesticide {
 
   @@index([type])
 }
+
+// Konten halaman statis yang bisa diedit admin (mis. key "tentang").
+model SiteContent {
+  key       String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+}
