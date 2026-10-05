@@ -67,7 +67,7 @@ function WaveDivider() {
 export default function Home() {
   return (
     <>
-      <main className="font-landing">
+      <main>
         {/* Hero — sesuai desain landing page */}
         <section className="relative isolate overflow-hidden bg-gradient-to-b from-tani-50 via-white to-tani-50">
           {/* Lapisan dekoratif: blob gradient lembut sebagai pengganti background polos.

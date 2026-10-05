@@ -19,12 +19,8 @@
 body {
   background: var(--color-tani-50);
   color: #1a2e1a;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Font landing page sesuai desain */
-.font-landing {
-  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+  /* Font desain: Plus Jakarta Sans, berlaku untuk semua route. */
+  font-family: var(--font-jakarta), Arial, Helvetica, sans-serif;
 }
 
 /* Animasi lembut untuk blob gradient + gelombang di landing page */
