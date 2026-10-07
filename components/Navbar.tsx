@@ -32,12 +32,6 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/obat",
     status: "active",
     fitur: "obat",
-    children: [
-      { label: "Herbisida", href: "/obat/jenis/herbisida", status: "soon" },
-      { label: "Insektisida", href: "/obat/jenis/insektisida", status: "soon" },
-      { label: "Fungisida", href: "/obat/jenis/fungisida", status: "soon" },
-      { label: "Akarisida", href: "/obat/jenis/akarisida", status: "soon" },
-    ],
   },
   { label: "Tentang", href: "/tentang", status: "active" },
 ];
