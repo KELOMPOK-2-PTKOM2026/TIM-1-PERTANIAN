@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, btnLime, card, MockBanner, PageHeader, StatCard } from "@/components/features/admin/ui";
+import { Badge, card, MockBanner, PageHeader, StatCard } from "@/components/features/admin/ui";
 import { isMockMode } from "@/lib/data";
 import { formatRupiah, formatTanggal } from "@/lib/format";
 import { CATEGORY_LABEL } from "@/lib/mock";
@@ -22,11 +22,6 @@ export default async function AdminOverviewPage() {
       <PageHeader
         title="Dashboard"
         description="Ringkasan konten Tanimaju: artikel, harga pasar, dan katalog obat pertanian."
-        action={
-          <Link href="/admin/artikel/baru" className={btnLime}>
-            + Tulis artikel
-          </Link>
-        }
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Total artikel" value={art.total} unit="Artikel" note={`+${art.newThisMonth} bulan ini`} />
@@ -54,7 +49,7 @@ export default async function AdminOverviewPage() {
                     {CATEGORY_LABEL[a.category]} · {formatTanggal(a.publishedAt ?? a.createdAt)}
                   </p>
                 </div>
-                {a.publishedAt ? <Badge>Terbit</Badge> : <Badge tone="amber">Draft</Badge>}
+                {a.publishedAt ? <Badge dot>Terbit</Badge> : <Badge tone="amber" dot>Draft</Badge>}
               </li>
             ))}
           </ul>

@@ -87,13 +87,29 @@ export function MockBanner() {
   );
 }
 
-export function Badge({ children, tone = "green" }: { children: React.ReactNode; tone?: "green" | "gray" | "amber" }) {
+export type BadgeTone = "green" | "gray" | "amber" | "red" | "blue";
+
+export function Badge({ children, tone = "green", dot }: { children: React.ReactNode; tone?: BadgeTone; dot?: boolean }) {
   const cls = {
     green: "bg-[#CDEF7A]/70 text-[#084734]",
     gray: "bg-stone-100 text-stone-700",
     amber: "bg-amber-100 text-amber-800",
+    red: "bg-red-100 text-red-700",
+    blue: "bg-sky-100 text-sky-800",
   }[tone];
-  return <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${cls}`}>{children}</span>;
+  const dotCls = {
+    green: "bg-emerald-500",
+    gray: "bg-stone-400",
+    amber: "bg-amber-500",
+    red: "bg-red-500",
+    blue: "bg-sky-500",
+  }[tone];
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${cls}`}>
+      {dot && <span className={`h-1.5 w-1.5 rounded-full ${dotCls}`} />}
+      {children}
+    </span>
+  );
 }
 
 export function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {

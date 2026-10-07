@@ -4,6 +4,7 @@ import {
   ADMIN_ICON,
   AdminIcon,
   Badge,
+  type BadgeTone,
   btnGhost,
   btnLime,
   card,
@@ -20,6 +21,14 @@ import { CATEGORY_LABEL, type ArticleCategory } from "@/lib/mock";
 import { pageParams } from "@/modules/admin/admin.shared";
 import { deleteArticleAction, togglePublishAction } from "@/modules/artikel/artikel.actions";
 import { articleStats, listArticles } from "@/modules/artikel/artikel.service";
+
+// Warna penanda per kategori supaya card mudah dibedakan.
+const CATEGORY_TONE: Record<keyof typeof CATEGORY_LABEL, BadgeTone> = {
+  PENGETAHUAN: "blue",
+  KIAT: "green",
+  SOLUSI: "red",
+  INSPIRASI: "amber",
+};
 
 type SP = { q?: string; category?: string; status?: string; page?: string; per?: string };
 
@@ -79,7 +88,7 @@ export default async function AdminArtikelPage({ searchParams }: { searchParams:
       ) : (
         <ul className="space-y-4">
           {items.map((a) => (
-            <li key={a.id} className={`${card} flex flex-col gap-4 p-4 sm:flex-row`}>
+            <li key={a.id} className={`${card} flex flex-col gap-4 border-l-4 p-4 sm:flex-row ${a.publishedAt ? "border-l-emerald-500" : "border-l-amber-400"}`}>
               <div className="aspect-[3/2] w-full shrink-0 overflow-hidden rounded-xl bg-tani-100 sm:w-56">
                 {a.coverUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element -- URL cover bebas (bukan domain tetap)
@@ -92,8 +101,8 @@ export default async function AdminArtikelPage({ searchParams }: { searchParams:
               </div>
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500">
-                  <Badge tone="gray">{CATEGORY_LABEL[a.category]}</Badge>
-                  {a.publishedAt ? <Badge>Terbit</Badge> : <Badge tone="amber">Draft</Badge>}
+                  <Badge tone={CATEGORY_TONE[a.category]}>{CATEGORY_LABEL[a.category]}</Badge>
+                  {a.publishedAt ? <Badge dot>Terbit</Badge> : <Badge tone="amber" dot>Draft</Badge>}
                   <span className="flex items-center gap-1">
                     <AdminIcon d={ADMIN_ICON.calendar} className="h-3.5 w-3.5" />
                     {formatTanggal(a.publishedAt ?? a.createdAt)}
