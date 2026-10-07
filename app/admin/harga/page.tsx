@@ -18,6 +18,7 @@ import { formatRupiah, formatTanggal } from "@/lib/format";
 import { pageParams } from "@/modules/admin/admin.shared";
 import { deleteCommodityAction, deleteMarketAction, deletePriceAction } from "@/modules/harga/harga.actions";
 import {
+  latestPriceMap,
   listCommoditiesWithCount,
   listMarketsWithCount,
   listPrices,
@@ -38,11 +39,12 @@ export default async function AdminHargaPage({ searchParams }: { searchParams: P
   const { page, per, skip } = pageParams(sp, 10);
   const mock = isMockMode();
 
-  const [stats, commodities, markets, prices] = await Promise.all([
+  const [stats, commodities, markets, prices, lastPrices] = await Promise.all([
     priceStats(),
     listCommoditiesWithCount(),
     listMarketsWithCount(),
     listPrices({ commodityId: sp.commodityId, marketId: sp.marketId, skip, take: per }),
+    latestPriceMap(),
   ]);
 
   return (
@@ -173,7 +175,7 @@ export default async function AdminHargaPage({ searchParams }: { searchParams: P
 
         {!mock && (
           <aside className="lg:sticky lg:top-6">
-            {tab === "harga" && <PriceForm commodities={commodities} markets={markets} />}
+            {tab === "harga" && <PriceForm commodities={commodities} markets={markets} lastPrices={lastPrices} />}
             {tab === "komoditas" && <CommodityForm />}
             {tab === "pasar" && <MarketForm />}
           </aside>

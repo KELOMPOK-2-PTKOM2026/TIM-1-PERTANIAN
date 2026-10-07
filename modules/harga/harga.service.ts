@@ -58,6 +58,30 @@ export async function listPrices(f: AdminPriceFilter) {
   return { items, total };
 }
 
+export type LastPrice = { price: number; date: string };
+
+// Harga terakhir per pasangan komoditas+pasar, key "commodityId:marketId".
+// Dipakai form input agar admin bisa membandingkan dengan harga sebelumnya.
+export async function latestPriceMap(): Promise<Record<string, LastPrice>> {
+  const map: Record<string, LastPrice> = {};
+  if (!prisma) {
+    for (const p of MOCK_PRICES) {
+      const key = `${p.commodityId}:${p.marketId}`;
+      if (!map[key] || p.date > map[key].date) map[key] = { price: p.price, date: p.date };
+    }
+    return map;
+  }
+  const rows = await prisma.price.findMany({
+    distinct: ["commodityId", "marketId"],
+    orderBy: [{ commodityId: "asc" }, { marketId: "asc" }, { date: "desc" }, { createdAt: "desc" }],
+    select: { commodityId: true, marketId: true, price: true, date: true },
+  });
+  for (const r of rows) {
+    map[`${r.commodityId}:${r.marketId}`] = { price: r.price, date: r.date.toISOString().slice(0, 10) };
+  }
+  return map;
+}
+
 export async function priceStats() {
   if (!prisma) {
     const latest = MOCK_PRICES.reduce((m, p) => (p.date > m ? p.date : m), "");
