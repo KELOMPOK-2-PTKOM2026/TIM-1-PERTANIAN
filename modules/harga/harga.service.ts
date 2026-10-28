@@ -130,7 +130,7 @@ export async function createPrice(input: PriceInput) {
 }
 
 export async function deletePrice(id: string) {
-  return requireDb().price.delete({ where: { id } });
+  return requireDb().price.deleteMany({ where: { id } });
 }
 
 export async function createCommodity(input: CommodityInput) {
@@ -138,7 +138,7 @@ export async function createCommodity(input: CommodityInput) {
 }
 
 export async function deleteCommodity(id: string) {
-  return requireDb().commodity.delete({ where: { id } });
+  return requireDb().commodity.deleteMany({ where: { id } });
 }
 
 export async function createMarket(input: MarketInput) {
@@ -146,5 +146,5 @@ export async function createMarket(input: MarketInput) {
 }
 
 export async function deleteMarket(id: string) {
-  return requireDb().market.delete({ where: { id } });
+  return requireDb().market.deleteMany({ where: { id } });
 }

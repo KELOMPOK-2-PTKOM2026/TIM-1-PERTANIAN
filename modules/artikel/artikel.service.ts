@@ -118,7 +118,7 @@ export async function setArticlePublished(id: string, publish: boolean) {
 }
 
 export async function deleteArticle(id: string) {
-  return requireDb().article.delete({ where: { id } });
+  return requireDb().article.deleteMany({ where: { id } });
 }
 
 function toAdmin(r: ArticleRow): AdminArticle {
