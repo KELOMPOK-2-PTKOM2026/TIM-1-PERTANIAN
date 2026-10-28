@@ -29,7 +29,7 @@ export async function listPesticides(f: PesticideFilter) {
 }
 
 export async function pesticideCountByType(): Promise<Record<PesticideType, number> & { total: number }> {
-  const out = { HERBISIDA: 0, INSEKTISIDA: 0, FUNGISIDA: 0, AKARISIDA: 0, total: 0 };
+  const out = { HERBISIDA: 0, INSEKTISIDA: 0, FUNGISIDA: 0, AKARISIDA: 0, PUPUK: 0, LAINNYA: 0, total: 0 };
   if (!prisma) return out;
   const rows = await prisma.pesticide.groupBy({ by: ["type"], _count: { _all: true } });
   for (const r of rows) {
@@ -46,11 +46,21 @@ export async function getPesticideById(id: string) {
 
 function toData(input: PesticideInput) {
   return {
-    ...input,
-    slug: slugify(input.name),
+    name: input.name,
+    type: input.type,
+    activeIngredient: input.activeIngredient,
+    targets: input.targets,
+    dosage: input.dosage,
     packaging: input.packaging || null,
     manufacturer: input.manufacturer || null,
+    description: input.description,
     imageUrl: input.imageUrl || null,
+    price: input.price,
+    phi: input.phi || null,
+    tanamanSasaran: input.tanamanSasaran
+      ? input.tanamanSasaran.split(",").map((s) => s.trim()).filter(Boolean)
+      : [],
+    slug: slugify(input.name),
   };
 }
 
@@ -63,5 +73,5 @@ export async function updatePesticide(id: string, input: PesticideInput) {
 }
 
 export async function deletePesticide(id: string) {
-  return requireDb().pesticide.delete({ where: { id } });
+  return requireDb().pesticide.deleteMany({ where: { id } });
 }

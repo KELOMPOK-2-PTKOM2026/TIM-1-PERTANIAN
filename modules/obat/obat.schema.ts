@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const PESTICIDE_TYPES = ["HERBISIDA", "INSEKTISIDA", "FUNGISIDA", "AKARISIDA"] as const;
+export const PESTICIDE_TYPES = ["HERBISIDA", "INSEKTISIDA", "FUNGISIDA", "AKARISIDA", "PUPUK", "LAINNYA"] as const;
 export type PesticideType = (typeof PESTICIDE_TYPES)[number];
 
 export const PESTICIDE_TYPE_LABEL: Record<PesticideType, string> = {
@@ -8,9 +8,21 @@ export const PESTICIDE_TYPE_LABEL: Record<PesticideType, string> = {
   INSEKTISIDA: "Insektisida",
   FUNGISIDA: "Fungisida",
   AKARISIDA: "Akarisida",
+  PUPUK: "Pupuk & Nutrisi",
+  LAINNYA: "Lainnya",
 };
 
 const optional = z.string().trim().max(120).default("");
+
+// Terima "48.000", "48000", atau kosong → number/null (harga boleh tidak diisi).
+const priceField = z.preprocess(
+  (v) => {
+    if (v === null || v === undefined) return null;
+    const digits = String(v).replace(/[^\d]/g, "");
+    return digits ? Number(digits) : null;
+  },
+  z.number().int("Harga harus berupa angka bulat").min(0, "Harga tidak boleh negatif").max(99999999, "Harga terlalu besar").nullable(),
+);
 
 export const pesticideSchema = z.object({
   name: z.string().trim().min(2, "Nama obat minimal 2 karakter").max(120),
@@ -21,7 +33,10 @@ export const pesticideSchema = z.object({
   packaging: optional,
   manufacturer: optional,
   description: z.string().trim().default(""),
-  imageUrl: z.union([z.literal(""), z.url("URL gambar tidak valid")]).default(""),
+  imageUrl: z.union([z.literal(""), z.url({ protocol: /^https$/, error: "URL gambar harus https://" })]).default(""),
+  price: priceField,
+  phi: z.string().trim().max(60).default(""),
+  tanamanSasaran: z.string().trim().max(500).default(""),
 });
 
 export type PesticideInput = z.infer<typeof pesticideSchema>;

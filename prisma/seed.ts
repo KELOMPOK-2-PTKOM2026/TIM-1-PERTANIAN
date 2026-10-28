@@ -18,39 +18,185 @@ const MARKETS = [
   { name: "Pasar Induk Kramat Jati", city: "Jakarta Timur" },
 ];
 
+// Foto via Special:FilePath Wikimedia Commons (stabil & boleh di-hotlink);
+// setiap URL diverifikasi manual (HTTP 200 + content-type image) sebelum masuk sini.
+// Produk tanpa imageUrl sengaja disertakan untuk mendemokan fallback placeholder.
 const PESTICIDES = [
+  {
+    slug: "roundup-486-sl",
+    name: "Roundup 486 SL",
+    type: "HERBISIDA" as const,
+    activeIngredient: "Glifosat 486 g/l (isopropilamina)",
+    targets: "Gulma berdaun lebar dan rumput tahunan pada lahan olah tanah maupun tanpa olah tanah",
+    dosage: "3–5 ml/liter air, semprot merata pada gulma yang aktif tumbuh",
+    packaging: "1 liter",
+    manufacturer: "Monsanto",
+    description:
+      "Herbisida sistemik spektrum luas yang bekerja melalui daun hingga ke rizoma. Aplikasi terbaik pagi hari saat gulma dalam fase pertumbuhan aktif; hindari semprotan hanyut ke tanaman budidaya.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Roundup%20Kanister%202020%2008.JPG?width=800",
+    price: 145000,
+    phi: "Non-Panen",
+    tanamanSasaran: ["Jagung", "Sawit", "Karet", "Lahan Perkebunan"],
+  },
   {
     slug: "proclaim-5-sg",
     name: "Proclaim 5 SG",
     type: "INSEKTISIDA" as const,
     activeIngredient: "Emamektin benzoat 5%",
-    targets: "Ulat grayak (Spodoptera frugiperda) pada jagung, bawang merah, dan sayuran daun",
-    dosage: "0,2–0,4 g/liter air",
+    targets: "Ulat grayak (Spodoptera frugiperda), ulat daun, dan penggerek buah pada sayuran",
+    dosage: "0,2–0,4 g/liter air, semprot saat populasi larva muda",
     packaging: "25 g / 50 g",
     manufacturer: "Syngenta",
-    description: "Insektisida kontak dan lambung untuk pengendalian ulat.",
+    description:
+      "Insektisida kontak dan lambung untuk pengendalian ulat. Gunakan APD lengkap saat penakaran dan rotasikan bahan aktif tiap 2–3 aplikasi untuk mencegah resistensi.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Insecticide%20Spray.jpg?width=800",
+    price: 87500,
+    phi: "7 Hari",
+    tanamanSasaran: ["Jagung", "Bawang Merah", "Cabai", "Sayuran Daun"],
+  },
+  {
+    slug: "fipronil-50-sc",
+    name: "Fipronil 50 SC",
+    type: "INSEKTISIDA" as const,
+    activeIngredient: "Fipronil 50 g/l",
+    targets: "Penggerek batang padi, kutu daun, wereng batang cokelat, dan semut tanah",
+    dosage: "1–1,5 ml/liter air, semprot volume tinggi ke pangkal batang",
+    packaging: "100 ml / 250 ml",
+    manufacturer: "BASF",
+    description:
+      "Insektisida fenilpirazol berspektrum luas dengan efek kontak, lambung, dan translaminar. Beracun bagi lebah — jangan aplikasi saat tanaman berbunga dan kunjungan lebah tinggi.",
+    imageUrl: "",
+    price: 62000,
+    phi: "14 Hari",
+    tanamanSasaran: ["Padi", "Jagung", "Kedelai"],
   },
   {
     slug: "amistar-top-325-sc",
     name: "Amistar Top 325 SC",
     type: "FUNGISIDA" as const,
-    activeIngredient: "Azoksistrobin + Difenokonazol",
-    targets: "Antraknosa (patek) pada cabai, blas daun dan hawar pelepah padi",
-    dosage: "0,5–1 ml/liter air",
+    activeIngredient: "Azoksistrobin 200 g/l + Difenokonazol 125 g/l",
+    targets: "Antraknosa (patek) pada cabai, blas daun, dan hawar pelepah padi",
+    dosage: "0,5–1 ml/liter air, semprot profilaktik saat gejala awal",
     packaging: "100 ml / 250 ml",
     manufacturer: "Syngenta",
-    description: "Fungisida sistemik berspektrum luas.",
+    description:
+      "Fungisida sistemik berspektrum luas gabungan dua mode aksi (strobilurin + triazol) sehingga efektif sekaligus mengurangi risiko resistensi patogen.",
+    imageUrl: "",
+    price: 110000,
+    phi: "14 Hari",
+    tanamanSasaran: ["Padi", "Cabai", "Bawang", "Mangga"],
   },
   {
-    slug: "demolish-18-ec",
-    name: "Demolish 18 EC",
+    slug: "bakar-bordeaux",
+    name: "Bakar Bordeaux (Bordeaux Mixture)",
+    type: "FUNGISIDA" as const,
+    activeIngredient: "Tembaga sulfat + kapur tohor (fungisida kontak tembaga)",
+    targets: "Blas daun, antraknosa, dan penyakit bakteri akibat patogen daun pada berbagai tanaman",
+    dosage: "Campuran 1–2% disemprotkan atau dioleskan pada luka pangkas",
+    packaging: "Serbuk 500 g",
+    manufacturer: "",
+    description:
+      "Fungisida tembaga klasik yang telah dipakai lebih dari seabad, ramah untuk budidaya organik. Jangan dicampur dengan produk berreaksi asam; bilas alat semprot setelah digunakan.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Calda%20Bordalesa.jpg?width=800",
+    price: 35000,
+    phi: "3 Hari",
+    tanamanSasaran: ["Tomat", "Kentang", "Anggur", "Jeruk"],
+  },
+  {
+    slug: "belerang-80-wp",
+    name: "Belerang Pertanian 80 WP",
     type: "AKARISIDA" as const,
-    activeIngredient: "Abamektin 18 g/l",
-    targets: "Thrips, tungau merah, dan kutu kebul pada sayuran hortikultura",
-    dosage: "0,75 ml/liter air",
-    packaging: "100 ml",
-    manufacturer: "DGW",
-    description: "Insektisida/akarisida translaminar.",
+    activeIngredient: "Sulfur (belerang) 80%",
+    targets: "Tungau merah, tungau rusuk, dan jamur tepung (powdery mildew)",
+    dosage: "2–3 g/liter air, semprot pagi hari suhu di bawah 30°C",
+    packaging: "1 kg",
+    manufacturer: "",
+    description:
+      "Belerang terapung berfungsi ganda sebagai akarisida dan fungisida. Efektif mengendalikan tungau tanpa merusak musuh alami; hindari aplikasi saat udara panas agar tidak meracuni tanaman.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Sulfur%20powder%20packaged%20in%20bags.jpg?width=800",
+    price: 28000,
+    phi: "3 Hari",
+    tanamanSasaran: ["Cabai", "Mangga", "Melon", "Anggur"],
+  },
+  {
+    slug: "npk-19-19-19-ws",
+    name: "NPK 19-19-19 Water Soluble",
+    type: "PUPUK" as const,
+    activeIngredient: "N 19% + P2O5 19% + K2O 19% (100% larut air)",
+    targets: "Memenuhi kebutuhan makro seimbang pada fase vegetatif menuju generatif",
+    dosage: "2–3 g/liter air, disiram ke media atau disemprotkan ke daun tiap 7–10 hari",
+    packaging: "1 kg",
+    manufacturer: "Oshnic Crop Science",
+    description:
+      "Pupuk major larut air komposisi seimbang, cocok untuk fertigasi tetes dan penyiraman manual pada hortikultura maupun tanaman pot.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/NPK%2019-19-19%20Fertilizer%20in%201%20KG%20Commercial%20Packing%20(1).jpg?width=800",
+    price: 95000,
+    phi: "Non-Pestisida",
+    tanamanSasaran: ["Cabai", "Tomat", "Melon", "Bawang"],
+  },
+  {
+    slug: "urea-46",
+    name: "Urea 46%",
+    type: "PUPUK" as const,
+    activeIngredient: "Urea 46% N (amidstik)",
+    targets: "Sumber nitrogen ekonomis untuk pertumbuhan vegetatif daun dan batang",
+    dosage: "100–200 kg/ha per musim, dibagi 2–3 kali pemberian",
+    packaging: "Karung 25 kg",
+    manufacturer: "",
+    description:
+      "Pupuk nitrogen paling banyak dipakai petani Indonesia. Berikan bertahap dan ditutup tanah untuk mengurangi penguapan; jangan diberikan berlebih menjelang masa pembungaan.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Harnstoff%2001.jpg?width=800",
+    price: 155000,
+    phi: "Non-Pestisida",
+    tanamanSasaran: ["Padi", "Jagung", "Sayuran"],
+  },
+  {
+    slug: "kalsium-nitrat-calcinit",
+    name: "Kalsium Nitrat (Calcinit)",
+    type: "PUPUK" as const,
+    activeIngredient: "N 15,5% + CaO 26% (kalsium nitrat, 100% larut air)",
+    targets: "Mencegah busuk ujung buah (blossom-end rot) akibat defisiensi kalsium",
+    dosage: "1–2 g/liter air melalui fertigasi atau semprot daun",
+    packaging: "Karung 25 kg",
+    manufacturer: "Yara",
+    description:
+      "Pupuk kalsium nitrat bebas klorida untuk fertigasi. Memastikan pasokan kalsium stabil pada fase pembesaran buah sehingga dinding buah kuat dan awet simpan.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Calcinit%2001.jpg?width=800",
+    price: 385000,
+    phi: "Non-Pestisida",
+    tanamanSasaran: ["Tomat", "Cabai", "Melon", "Strawberi"],
+  },
+  {
+    slug: "pupuk-kandang-matang",
+    name: "Pupuk Kandang Matang",
+    type: "PUPUK" as const,
+    activeIngredient: "Pupuk organik kandang difermentasi (C-organik tinggi)",
+    targets: "Perbaikan struktur, drainase, dan biologi tanah sebagai pupuk dasar",
+    dosage: "10–15 ton/ha ditebarkan dan dicampur tanah 7–10 hari sebelum tanam",
+    packaging: "Karung 20 kg",
+    manufacturer: "",
+    description:
+      "Pupuk kandang sudah difermentasi penuh sehingga bebas patogen tular tanah dan biji gulma. Menyehatkan tanah jangka panjang dan menekan ketergantungan pupuk kimia.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Compost%20pile.JPG?width=800",
+    price: 45000,
+    phi: "Non-Pestisida",
+    tanamanSasaran: ["Padi", "Sayuran", "Tanaman Buah"],
+  },
+  {
+    slug: "unsur-mikro-kelat",
+    name: "Pupuk Unsur Mikro (Trace Elements)",
+    type: "LAINNYA" as const,
+    activeIngredient: "Mg, Fe, Zn, B, Mn, Cu, Mo (kelat larut air)",
+    targets: "Mengatasi defisiensi unsur mikro yang umum pada tanah berpasir dan lahan lama dibudidayakan",
+    dosage: "1–2 g/liter air, semprot daun tiap 10–14 hari saat gejala klorosis",
+    packaging: "500 g",
+    manufacturer: "Manutec",
+    description:
+      "Suplemen unsur mikro untuk daun hijau merata dan pembungaan optimal. Aman dikombinasikan dengan pupuk daun NPK pada penyemprotan yang sama.",
+    imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Fertilizer.jpg?width=800",
+    price: 72000,
+    phi: "Non-Pestisida",
+    tanamanSasaran: ["Sayuran", "Tanaman Buah", "Tanaman Hias"],
   },
 ];
 
@@ -212,13 +358,15 @@ async function main() {
     await prisma.price.createMany({ data: rows.slice(i, i + 100) });
   }
 
-  // Info obat (Fase 2)
-  for (const o of PESTICIDES) {
-    await prisma.pesticide.upsert({ where: { slug: o.slug }, update: {}, create: o });
-  }
+  // Info obat (Fase 2). Katalog diganti penuh agar re-seed menyegarkan data lama.
+  await prisma.pesticide.deleteMany({});
+  await prisma.pesticide.createMany({ data: PESTICIDES });
 
-  // Admin awal (Fase 2). Ganti SEED_ADMIN_PASSWORD di produksi.
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "admin12345";
+  // Admin awal (Fase 2). SEED_ADMIN_PASSWORD wajib di produksi.
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || (process.env.NODE_ENV === "production" ? "" : "admin12345");
+  if (adminPassword.length < 12 && process.env.NODE_ENV === "production") {
+    throw new Error("SEED_ADMIN_PASSWORD wajib diisi (min 12 karakter) di produksi");
+  }
   await prisma.user.upsert({
     where: { email: "admin@tanimaju.id" },
     update: {},

@@ -2,13 +2,13 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email("Email tidak valid")),
-  password: z.string().min(8, "Password minimal 8 karakter"),
+  password: z.string().min(8, "Password minimal 8 karakter").max(72, "Password maksimal 72 karakter"),
 });
 
 export const registerSchema = z.object({
   name: z.string().trim().min(2, "Nama minimal 2 karakter"),
   email: z.string().trim().toLowerCase().pipe(z.email("Email tidak valid")),
-  password: z.string().min(8, "Password minimal 8 karakter"),
+  password: z.string().min(8, "Password minimal 8 karakter").max(72, "Password maksimal 72 karakter"),
   city: z.string().trim().optional(),
   whatsapp: z
     .string()
