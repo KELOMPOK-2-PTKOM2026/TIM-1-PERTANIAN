@@ -378,7 +378,22 @@ async function main() {
     },
   });
 
-  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, ${PESTICIDES.length} obat, 1 admin`);
+  // Pakar awal (Fase 2): menjawab konsultasi. Dilewati bila SEED_PAKAR_PASSWORD kosong.
+  const pakarPassword = process.env.SEED_PAKAR_PASSWORD;
+  if (pakarPassword) {
+    await prisma.user.upsert({
+      where: { email: "pakar@tanimaju.id" },
+      update: {},
+      create: {
+        email: "pakar@tanimaju.id",
+        name: "Pakar TaniMaju",
+        role: "PAKAR",
+        passwordHash: await bcrypt.hash(pakarPassword, 10),
+      },
+    });
+  }
+
+  console.log(`Seed OK: ${ARTICLES.length} artikel, ${rows.length} harga, ${PESTICIDES.length} obat, 1 admin${pakarPassword ? ", 1 pakar" : ""}`);
 }
 
 main()

@@ -10,6 +10,8 @@ export const ADMIN_ICON = {
   external: "M14 3h7v7M21 3l-9 9M19 14v7H3V5h7",
   logout: "M9 21H4V3h5M16 17l5-5-5-5M21 12H9",
   menu: "M3 6h18M3 12h18M3 18h18",
+  chat: "M4 4h16v12H8l-4 4zM8 9h8M8 12h5",
+  archive: "M3 4h18v4H3zM5 8v12h14V8M10 12h4",
   eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
   calendar: "M3 5h18v16H3zM3 10h18M8 3v4M16 3v4",
   plus: "M12 5v14M5 12h14",

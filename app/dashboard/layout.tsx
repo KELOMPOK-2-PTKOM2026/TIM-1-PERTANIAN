@@ -1,33 +1,30 @@
-import Link from "next/link";
+import AdminShell, { type ShellMenuItem } from "@/components/features/admin/AdminShell";
+import { ADMIN_ICON } from "@/components/features/admin/ui";
 import { requireUser } from "@/modules/auth/auth.guard";
-import { logoutAction } from "@/modules/auth/auth.actions";
 
-// Layout dashboard: guard login Fase 2.
+// Layout dashboard: guard login Fase 2, tampilan sidebar sama dengan admin.
 // Guard server-side (proxy.ts hanya cek optimistis).
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
+  const menu: ShellMenuItem[] = [
+    { label: "Konsultasi", href: "/dashboard/konsultasi", icon: ADMIN_ICON.chat },
+    { label: "Arsip Q&A", href: "/dashboard/konsultasi/arsip", icon: ADMIN_ICON.archive },
+  ];
+  if (user.role === "PAKAR" || user.role === "ADMIN") {
+    menu.push({ label: "Jawab Pertanyaan", href: "/dashboard/konsultasi/jawab", icon: ADMIN_ICON.edit });
+  }
+  if (user.role === "ADMIN") {
+    menu.push({ label: "Admin CMS", href: "/admin", icon: ADMIN_ICON.grid });
+  }
+
   return (
-    <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-      <nav className="mb-6 flex gap-4 border-b pb-4 text-sm font-medium">
-        <Link href="/dashboard/konsultasi" className="hover:underline">
-          Konsultasi
-        </Link>
-        <Link href="/dashboard/konsultasi/arsip" className="hover:underline">
-          Arsip Q&A
-        </Link>
-        {(user.role === "PAKAR" || user.role === "ADMIN") && (
-          <Link href="/dashboard/konsultasi/jawab" className="hover:underline">
-            Jawab Pertanyaan
-          </Link>
-        )}
-        <form action={logoutAction} className="ml-auto flex items-center gap-3">
-          <span className="text-stone-600">{user.name}</span>
-          <button type="submit" className="hover:underline">
-            Logout
-          </button>
-        </form>
-      </nav>
+    <AdminShell
+      user={{ name: user.name, email: user.email }}
+      menu={menu}
+      home="/dashboard/konsultasi"
+      label={user.role === "PETANI" ? "Dashboard Petani" : "Dashboard Pakar"}
+    >
       {children}
-    </div>
+    </AdminShell>
   );
 }
