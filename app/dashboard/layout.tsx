@@ -15,6 +15,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <Link href="/dashboard/konsultasi/arsip" className="hover:underline">
           Arsip Q&A
         </Link>
+        {(user.role === "PAKAR" || user.role === "ADMIN") && (
+          <Link href="/dashboard/konsultasi/jawab" className="hover:underline">
+            Jawab Pertanyaan
+          </Link>
+        )}
         <form action={logoutAction} className="ml-auto flex items-center gap-3">
           <span className="text-stone-600">{user.name}</span>
           <button type="submit" className="hover:underline">

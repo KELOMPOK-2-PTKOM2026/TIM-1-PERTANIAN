@@ -77,6 +77,34 @@ model User {
   city         String?
   whatsapp     String?
   createdAt    DateTime @default(now())
+
+  consultations Consultation[]
+}
+
+// Fase 2 — Konsultasi Tani (dijawab PAKAR / ADMIN)
+enum ConsultationStatus {
+  OPEN
+  ANSWERED
+}
+
+model Consultation {
+  id         String             @id @default(cuid())
+  userId     String
+  name       String
+  city       String
+  whatsapp   String?
+  topic      String
+  question   String             @db.Text
+  status     ConsultationStatus @default(OPEN)
+  answer     String?            @db.Text
+  answeredBy String? // nama penjawab
+  answeredAt DateTime?
+  createdAt  DateTime           @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([status, answeredAt])
 }
 
 // Fase 2 — Info Obat (dikelola admin)

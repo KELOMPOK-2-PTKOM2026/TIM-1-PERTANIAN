@@ -12,6 +12,7 @@ const MENU = [
   { label: "Artikel", href: "/admin/artikel", icon: ADMIN_ICON.doc },
   { label: "Harga Pasar", href: "/admin/harga", icon: ADMIN_ICON.trend },
   { label: "Info Obat", href: "/admin/obat", icon: ADMIN_ICON.flask },
+  { label: "Konsultasi", href: "/dashboard/konsultasi/jawab", icon: ADMIN_ICON.doc },
   { label: "Pengaturan", href: "/admin/pengaturan", icon: ADMIN_ICON.gear },
 ];
 
