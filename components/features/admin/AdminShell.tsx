@@ -6,12 +6,15 @@ import { useState } from "react";
 import { logoutAction } from "@/modules/auth/auth.actions";
 import { AdminIcon, ADMIN_ICON } from "./ui";
 
+export type ShellMenuItem = { label: string; href: string; icon: string };
+
 // Menu mengikuti tab navbar publik (Artikel, Harga Pasar, Info Obat) + Dashboard & Pengaturan.
-const MENU = [
+const ADMIN_MENU: ShellMenuItem[] = [
   { label: "Dashboard", href: "/admin", icon: ADMIN_ICON.grid },
   { label: "Artikel", href: "/admin/artikel", icon: ADMIN_ICON.doc },
   { label: "Harga Pasar", href: "/admin/harga", icon: ADMIN_ICON.trend },
   { label: "Info Obat", href: "/admin/obat", icon: ADMIN_ICON.flask },
+  { label: "Konsultasi", href: "/dashboard/konsultasi/jawab", icon: ADMIN_ICON.chat },
   { label: "Pengaturan", href: "/admin/pengaturan", icon: ADMIN_ICON.gear },
 ];
 
@@ -23,16 +26,27 @@ function initials(name: string) {
     .join("");
 }
 
+// Shell sidebar admin; dashboard pengguna memakai shell yang sama dengan menu & label sendiri.
 export default function AdminShell({
   user,
   children,
+  menu = ADMIN_MENU,
+  home = "/admin",
+  label = "Admin CMS",
 }: {
   user: { name: string; email: string };
   children: React.ReactNode;
+  menu?: ShellMenuItem[];
+  home?: string;
+  label?: string;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const isActive = (href: string) => (href === "/admin" ? pathname === href : pathname.startsWith(href));
+  // Link paling spesifik yang cocok yang aktif (mis. /konsultasi vs /konsultasi/arsip).
+  const activeHref = menu
+    .filter((m) => (m.href === home ? pathname === m.href : pathname === m.href || pathname.startsWith(m.href + "/")))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
+  const isActive = (href: string) => href === activeHref;
 
   return (
     <div className="flex min-h-screen bg-[#f6f8f4]">
@@ -49,13 +63,13 @@ export default function AdminShell({
         }`}
       >
         <div className="px-6 py-6">
-          <Link href="/admin" className="block">
+          <Link href={home} className="block">
             <span className="block text-2xl font-extrabold tracking-tight">Tanimaju</span>
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#CDEF7A]">Admin CMS</span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#CDEF7A]">{label}</span>
           </Link>
         </div>
-        <nav className="flex-1 space-y-1 px-4" aria-label="Navigasi admin">
-          {MENU.map((m) => (
+        <nav className="flex-1 space-y-1 px-4" aria-label={`Navigasi ${label}`}>
+          {menu.map((m) => (
             <Link
               key={m.href}
               href={m.href}
@@ -101,7 +115,7 @@ export default function AdminShell({
           >
             <AdminIcon d={ADMIN_ICON.menu} className="h-5 w-5" />
           </button>
-          <span className="font-bold text-[#084734]">Tanimaju Admin</span>
+          <span className="font-bold text-[#084734]">Tanimaju · {label}</span>
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-6 md:px-8 md:py-8">{children}</main>
       </div>

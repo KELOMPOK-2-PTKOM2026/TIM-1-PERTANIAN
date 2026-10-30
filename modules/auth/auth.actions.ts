@@ -50,7 +50,9 @@ export async function registerAction(
 ): Promise<AuthFormState> {
   const parsed = registerSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.issues[0].message };
-  if (!rateLimit(`register:${await clientIp()}`, 5, 60 * 60 * 1000)) return { error: TOO_MANY };
+  if (!rateLimit(`register:${await clientIp()}`, 5, 60 * 60 * 1000)) {
+    return { error: "Terlalu banyak pendaftaran. Coba lagi dalam 1 jam." };
+  }
 
   try {
     await registerUser(parsed.data);
@@ -58,6 +60,7 @@ export async function registerAction(
     if (e instanceof AppError) return { error: e.message };
     throw e;
   }
+  formData.set("callbackUrl", "/dashboard/konsultasi?welcome=1");
   return loginAction(undefined, formData);
 }
 
